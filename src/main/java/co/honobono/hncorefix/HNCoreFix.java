@@ -22,7 +22,8 @@ public class HNCoreFix extends JavaPlugin {
 			sender.sendMessage("Help");
 		} else {
 			switch (args[0].toUpperCase()) {
-
+			case "TEST":
+				break;
 			}
 		}
 		return false;
