@@ -1,0 +1,24 @@
+name: ${pom.artifactId}
+version: ${pom.version}
+description: This is HonobonoServer plugin.
+author: syu_chan_1005
+website: https://twitter.com/syu_chan_1005/
+database: false
+main: co.honobono.hncorefix.HNCoreFix
+prefix: §bHN-Core§r
+commands:
+    hn:
+        usage: /hn - to see the help
+        aliases: [h]
+        description: To see the HNCore help.
+        permission: hn.help
+        permission-message: You don't have <permission>.
+permission:
+    hn.all:
+        default: op
+        description: Allow all permission.
+        children:
+            hn.help: true
+    hn.help:
+        default: op
+        description: Allow view help.
