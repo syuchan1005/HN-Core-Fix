@@ -5,7 +5,7 @@ author: syu_chan_1005
 website: https://twitter.com/syu_chan_1005/
 database: false
 main: co.honobono.hncorefix.HNCoreFix
-prefix: §bHN-Core§r
+prefix: HN-Core
 commands:
     hn:
         usage: /hn - to see the help

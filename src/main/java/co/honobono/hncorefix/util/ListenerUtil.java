@@ -1,25 +1,47 @@
 package co.honobono.hncorefix.util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+
+import co.honobono.hncorefix.HNCoreFix;
+import co.honobono.hncorefix.annotation.ListenerAdd;
 
 public class ListenerUtil {
 
-	public static List<Listener> getListeners() {
-		String PName = "co.honobono.hncorefix.listener";
-		File[] CFiles = (new File(Thread.currentThread().getContextClassLoader().getResource(PName.replace(".", "/")).getFile())).listFiles();
-		List<Listener> o = new ArrayList<>();
-		for (int i1 = 0; i1 < CFiles.length; i1++) {
-			String FName = CFiles[i1].getName();
-			try {
-				o.add((Listener) Class.forName(PName + "." + FName.substring(0, FName.indexOf(".class"))).newInstance());
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				e.printStackTrace();
+	public static void RegListeners(Plugin pl) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+		File file = new File(HNCoreFix.getInstance().getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
+		JarFile jar = new JarFile(file);
+		for (Enumeration<JarEntry> e = jar.entries(); e.hasMoreElements();) {
+			JarEntry entry = e.nextElement();
+			if(!entry.isDirectory() && entry.getName().endsWith(".class")) {
+				String className = entry.getName();
+				Class<?> clazz = Class.forName(className.replace('/', '.').substring(0, className.length() - 6));
+				if(hasListenerAdd(clazz.getAnnotations()) && hasListener(clazz.getInterfaces())) {
+					pl.getServer().getPluginManager().registerEvents((Listener) clazz.newInstance(), pl);
+				}
 			}
 		}
-		return o;
+		jar.close();
+	}
+
+	private static boolean hasListenerAdd(Annotation[] a) {
+		for(Annotation b : a) {
+			if(b instanceof ListenerAdd) return true;
+		}
+		return false;
+	}
+
+	private static boolean hasListener(Class<?>[] clazz) {
+		for(Class<?> c : clazz) {
+			if(c == Listener.class) return true;
+		}
+		return false;
 	}
 }
