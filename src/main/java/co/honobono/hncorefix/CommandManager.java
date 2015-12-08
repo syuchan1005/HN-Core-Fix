@@ -1,6 +1,7 @@
 package co.honobono.hncorefix;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,8 @@ public class CommandManager {
 			if(Util.hasString(args[0], e.getKey().getCommand())) {
 				Class<?> clazz = e.getValue();
 				try {
-					return (boolean)clazz.getMethod("onCommand").invoke(clazz.newInstance(), sender, args);
+					Method method = clazz.getDeclaredMethod("onCommand", CommandSender.class, String[].class);
+					return (boolean)method.invoke(clazz.newInstance(), sender, args);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 						| NoSuchMethodException | SecurityException | InstantiationException e1) {
 					e1.printStackTrace();
