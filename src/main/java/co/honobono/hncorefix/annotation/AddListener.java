@@ -9,6 +9,6 @@ import co.honobono.hncorefix.enums.ListenerType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ListenerAdd {
+public @interface AddListener {
 	ListenerType type() default ListenerType.DEFAULT;
 }

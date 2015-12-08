@@ -7,11 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import co.honobono.hncorefix.util.ListenerUtil;
-
 public class HNCoreFix extends JavaPlugin {
 	private static Plugin instance;
-
+	private static CommandManager manager = new CommandManager();
 	public static Plugin getInstance() {
 		return instance;
 	}
@@ -21,7 +19,7 @@ public class HNCoreFix extends JavaPlugin {
 		instance = this;
 		this.getCommand("hn").setExecutor(this);
 		try {
-			ListenerUtil.RegListeners(this);
+			Load.Register(this, manager);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
 			e.printStackTrace();
 		}
@@ -33,6 +31,6 @@ public class HNCoreFix extends JavaPlugin {
 			sender.sendMessage("Help");
 			return true;
 		}
-		return false;
+		return manager.run(sender, args);
 	}
 }

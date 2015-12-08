@@ -4,9 +4,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import co.honobono.hncorefix.annotation.ListenerAdd;
+import co.honobono.hncorefix.annotation.AddListener;
 
-@ListenerAdd
+@AddListener
 public class Test implements Listener{
 
 	@EventHandler
