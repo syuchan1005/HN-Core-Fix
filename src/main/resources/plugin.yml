@@ -11,8 +11,6 @@ commands:
         usage: /hn - to see the help
         aliases: [h]
         description: To see the HNCore help.
-        permission: hn.help
-        permission-message: You don't have <permission>.
 permission:
     hn.all:
         default: op

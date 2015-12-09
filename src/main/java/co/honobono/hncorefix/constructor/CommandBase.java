@@ -1,4 +1,4 @@
-package co.honobono.hncorefix;
+package co.honobono.hncorefix.constructor;
 
 public class CommandBase {
 

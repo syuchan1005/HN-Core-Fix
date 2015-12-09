@@ -13,6 +13,8 @@ import org.bukkit.plugin.Plugin;
 
 import co.honobono.hncorefix.annotation.AddCommand;
 import co.honobono.hncorefix.annotation.AddListener;
+import co.honobono.hncorefix.constructor.CommandBase;
+import co.honobono.hncorefix.constructor.CommandManager;
 
 public class Load {
 

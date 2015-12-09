@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import co.honobono.hncorefix.constructor.CommandManager;
 
 public class HNCoreFix extends JavaPlugin {
 	private static Plugin instance;
@@ -17,7 +20,9 @@ public class HNCoreFix extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		this.getCommand("hn").setExecutor(this);
+		PluginCommand pc = this.getCommand("hn");
+		pc.setExecutor(this);
+		pc.setTabCompleter(manager);
 		try {
 			Load.Register(this, manager);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
@@ -27,7 +32,7 @@ public class HNCoreFix extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		if (args.length == 0 && sender.hasPermission("hn.help")) { // help
+		if (args.length == 0) { // help
 			sender.sendMessage("Help");
 			return true;
 		}

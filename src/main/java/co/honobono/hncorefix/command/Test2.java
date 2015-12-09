@@ -4,8 +4,8 @@ import org.bukkit.command.CommandSender;
 
 import co.honobono.hncorefix.annotation.AddCommand;
 
-@AddCommand(command = {"test", "t"}, description = "This command is test.", permission = "hncorefix.test")
-public class Test {
+@AddCommand(command = {"test"}, description = "This command is test.", permission = "hncorefix.test")
+public class Test2 {
 	public static boolean onCommand(CommandSender sender, String[] args) {
 		sender.sendMessage("実行！");
 		return true;
