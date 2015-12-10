@@ -30,8 +30,7 @@ public class CommandManager implements TabCompleter {
 				Method method = e.getValue();
 				try {
 					if(!(sender instanceof Player) || sender.hasPermission(((AddCommand)method.getAnnotation(AddCommand.class)).permission())) {
-						Object obj = method.getClass().newInstance();
-						return (boolean) method.invoke(obj, sender, args);
+						return (boolean) method.invoke(method.getDeclaringClass().newInstance(), sender, args);
 					} else {
 						sender.sendMessage(((AddCommand)method.getAnnotation(AddCommand.class)).permissionmessage());
 						return true;
