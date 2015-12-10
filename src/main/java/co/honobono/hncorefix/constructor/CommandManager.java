@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -64,6 +65,25 @@ public class CommandManager implements TabCompleter {
 			}
 		}
 		return true;
+	}
+
+	public void sendHalp(CommandSender sender) {
+		sender.sendMessage(ChatColor.GREEN + "======" + ChatColor.BLUE + "Command Help" + ChatColor.GREEN + "======");
+		for(Map.Entry<CommandBase, Method> e : map.entrySet()) {
+			CommandBase cb = e.getKey();
+			sender.sendMessage(formatCommand(cb.getCommand()) + ":" + cb.getUsage());
+		}
+	}
+
+	private static String formatCommand(String[] str) {
+		String s = str[0];
+		str[0] = "";
+		if(str.length >= 2) {
+			s = s + "(";
+			for(String s1 : str) s = s + s1;
+			s = s + ")";
+		}
+		return s;
 	}
 
 	@Override

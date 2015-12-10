@@ -12,5 +12,5 @@ public @interface AddCommand {
 	String description();
 	String permission();
 	String permissionmessage() default "You don't have permission.";
-	String usage() default "";
+	String usage() default "Not added";
 }
