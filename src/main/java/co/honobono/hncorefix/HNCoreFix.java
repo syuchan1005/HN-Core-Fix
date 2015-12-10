@@ -33,7 +33,7 @@ public class HNCoreFix extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if (args.length < 1) { // help
-			if(sender.hasPermission("hn.help")) manager.sendHalp(sender);
+			if(sender.hasPermission("hn.help")) manager.sendHalp(sender); else sender.sendMessage("You don't have Permission");
 			return true;
 		}
 		return manager.run(sender, args);
