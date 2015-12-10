@@ -24,20 +24,19 @@ public class CommandManager implements TabCompleter {
 		map = new HashMap<>();
 	}
 
-	public boolean run(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+	public boolean run(CommandSender sender, String[] args) {
 		for (Map.Entry<CommandBase, Method> e : map.entrySet()) {
 			if (Util.hasString(args[0], e.getKey().getCommand())) {
 				Method method = e.getValue();
 				try {
 					if(!(sender instanceof Player) || sender.hasPermission(((AddCommand)method.getAnnotation(AddCommand.class)).permission())) {
-						sender.sendMessage("届いたよ！");
-						return (boolean) method.invoke(sender, cmd, commandLabel, args);
+						return (boolean) method.invoke(method.getClass().newInstance(), sender, args);
 					} else {
 						sender.sendMessage(((AddCommand)method.getAnnotation(AddCommand.class)).permissionmessage());
 						return true;
 					}
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-						| SecurityException e1) {
+						| SecurityException | InstantiationException e1) {
 					e1.printStackTrace();
 					return false;
 				}

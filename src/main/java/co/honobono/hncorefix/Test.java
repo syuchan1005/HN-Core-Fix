@@ -1,6 +1,5 @@
 package co.honobono.hncorefix;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,8 +12,9 @@ import co.honobono.hncorefix.annotation.AddListener;
 public class Test implements Listener{
 
 	@AddCommand(command = {"test", "t"}, description = "This is Test Command.", permission = "hncorefix.test")
-	public void c(CommandSender sender, Command cmd, String commandLable, String[] args) {
+	public boolean c(CommandSender sender, String[] args) {
 		sender.sendMessage("実行");
+		return true;
 	}
 
 	@EventHandler

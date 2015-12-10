@@ -38,6 +38,6 @@ public class HNCoreFix extends JavaPlugin {
 			}
 			return true;
 		}
-		return manager.run(sender, cmd, commandLabel, args);
+		return manager.run(sender, args);
 	}
 }
