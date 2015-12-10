@@ -32,10 +32,12 @@ public class HNCoreFix extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		if (args.length == 0) { // help
-			sender.sendMessage("Help");
+		if (args.length < 1) { // help
+			if(sender.hasPermission("hn.help")) {
+				sender.sendMessage("Help");
+			}
 			return true;
 		}
-		return manager.run(sender, args);
+		return manager.run(sender, cmd, commandLabel, args);
 	}
 }

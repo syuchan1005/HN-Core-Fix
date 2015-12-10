@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
@@ -31,9 +32,11 @@ public class Load {
 					pl.getServer().getPluginManager().registerEvents((Listener) clazz.newInstance(), pl);
 				}
 				// Command登録処理
-				if(hasAddCommand(clazz.getAnnotations()) && hasonCommand(clazz.getMethods())) {
-					AddCommand a = getCommand(clazz.getAnnotations());
-					manager.putMap(new CommandBase(a.command(), a.description(), a.permission(), a.permissionmessage(), a.usage()), clazz);
+				for(Method m : clazz.getMethods()) {
+					if(hasAddCommand(m.getAnnotations()) && hasArgs(m.getParameterTypes())) {
+						AddCommand a = getCommand(m.getAnnotations());
+						manager.putMap(new CommandBase(a.command(), a.description(), a.permission(), a.permissionmessage(), a.usage()), m);
+					}
 				}
 			}
 		}
@@ -51,12 +54,13 @@ public class Load {
 		for(Annotation b : a) if(b instanceof AddCommand) return true;
 		return false;
 	}
-	private static boolean hasonCommand(Method[] method) {
-		for(Method m : method) if(m.getName().equals("onCommand")) return true;
-		return false;
-	}
 	private static AddCommand getCommand(Annotation[] a) {
 		for(Annotation b : a) if(b instanceof AddCommand) return (AddCommand) b;
 		return null;
+	}
+	private static boolean hasArgs(Class<?>[] clazz) {
+		if(clazz.length != 2) return false;
+		if(clazz[0] == CommandSender.class && clazz[1] == String[].class) return true;
+		return false;
 	}
 }

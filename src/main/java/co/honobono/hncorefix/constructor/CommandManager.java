@@ -17,28 +17,28 @@ import co.honobono.hncorefix.exception.HNCommandOverlapException;
 import co.honobono.hncorefix.util.Util;
 
 public class CommandManager implements TabCompleter {
-	private Map<CommandBase, Class<?>> map;
+	private Map<CommandBase, Method> map;
 	private List<String> commands = new ArrayList<>();
 
 	public CommandManager() {
 		map = new HashMap<>();
 	}
 
-	public boolean run(CommandSender sender, String[] args) {
-		for (Map.Entry<CommandBase, Class<?>> e : map.entrySet()) {
+	public boolean run(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		for (Map.Entry<CommandBase, Method> e : map.entrySet()) {
 			if (Util.hasString(args[0], e.getKey().getCommand())) {
-				Class<?> clazz = e.getValue();
+				Method method = e.getValue();
 				try {
-					if(!(sender instanceof Player) || sender.hasPermission(((AddCommand)clazz.getAnnotation(AddCommand.class)).permission())) {
-						Method method = clazz.getDeclaredMethod("onCommand", CommandSender.class, String[].class);
-						return (boolean) method.invoke(clazz.newInstance(), sender, args);
+					if(!(sender instanceof Player) || sender.hasPermission(((AddCommand)method.getAnnotation(AddCommand.class)).permission())) {
+						sender.sendMessage("届いたよ！");
+						return (boolean) method.invoke(sender, cmd, commandLabel, args);
 					} else {
-						sender.sendMessage(((AddCommand)clazz.getAnnotation(AddCommand.class)).permissionmessage());
+						sender.sendMessage(((AddCommand)method.getAnnotation(AddCommand.class)).permissionmessage());
 						return true;
 					}
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-						| NoSuchMethodException | SecurityException | InstantiationException e1) {
-					// e1.printStackTrace();
+						| SecurityException e1) {
+					e1.printStackTrace();
 					return false;
 				}
 			}
@@ -46,7 +46,7 @@ public class CommandManager implements TabCompleter {
 		return false;
 	}
 
-	public void putMap(CommandBase base, Class<?> clazz) {
+	public void putMap(CommandBase base, Method m) {
 		try {
 			hasCommand(base.getCommand());
 		} catch (HNCommandOverlapException e) {
@@ -55,7 +55,7 @@ public class CommandManager implements TabCompleter {
 		}
 		for (String s : base.getCommand())
 			commands.add(s);
-		map.put(base, clazz);
+		map.put(base, m);
 	}
 
 	public boolean hasCommand(String[] a) throws HNCommandOverlapException {
