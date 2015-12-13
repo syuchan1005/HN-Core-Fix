@@ -1,7 +1,5 @@
 package co.honobono.hncorefix;
 
-import java.io.IOException;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -13,9 +11,6 @@ import co.honobono.hncorefix.constructor.CommandManager;
 public class HNCoreFix extends JavaPlugin {
 	private static Plugin instance;
 	private static CommandManager manager = new CommandManager();
-	public static Plugin getInstance() {
-		return instance;
-	}
 
 	@Override
 	public void onEnable() {
@@ -25,9 +20,7 @@ public class HNCoreFix extends JavaPlugin {
 		pc.setTabCompleter(manager);
 		try {
 			Load.Register(this, manager);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) { e.printStackTrace(); }
 	}
 
 	@Override
@@ -37,5 +30,9 @@ public class HNCoreFix extends JavaPlugin {
 			return true;
 		}
 		return manager.run(sender, args);
+	}
+
+	public static Plugin getInstance() {
+		return instance;
 	}
 }
