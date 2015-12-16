@@ -1,15 +1,20 @@
 package co.honobono.hncorefix;
 
+import java.io.File;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.honobono.hncorefix.constructor.CommandManager;
+import co.honobono.hncorefix.util.Config;
 
 public class HNCoreFix extends JavaPlugin {
 	private static Plugin instance;
+	private static FileConfiguration config;
 	private static CommandManager manager = new CommandManager();
 
 	@Override
@@ -18,14 +23,16 @@ public class HNCoreFix extends JavaPlugin {
 		PluginCommand pc = this.getCommand("hn");
 		pc.setExecutor(this);
 		pc.setTabCompleter(manager);
+		this.saveDefaultConfig();
 		try {
+			config = Config.getConfig(new File(this.getDataFolder(), "config.yml"));
 			Load.Register(this, manager);
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		if (args.length < 1) { // help
+		if (args.length < 1) {
 			if(sender.hasPermission("hn.help")) manager.sendHalp(sender); else sender.sendMessage("You don't have Permission");
 			return true;
 		}
@@ -34,5 +41,9 @@ public class HNCoreFix extends JavaPlugin {
 
 	public static Plugin getInstance() {
 		return instance;
+	}
+
+	public static FileConfiguration getConfigFile() {
+		return config;
 	}
 }
