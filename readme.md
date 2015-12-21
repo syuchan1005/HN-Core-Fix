@@ -1,1 +1,6 @@
-改変使用等は許可しますが、無改変(Package名およびClass名などの変更は改変と認めません)での使用は禁止とします。
+本プラグインのライセンスは、LGPLv3に従います。ライセンス条文は下記を参照して下さい。
+http://sourceforge.jp/magazine/07/09/05/017211
+
+また本プラグインパッケージco.honobono.hncorefix.util.japaneseは
+うっちぃ様作成のLunaChat(https://github.com/ucchyocean/LunaChat)内にある
+パッケージcom.github.ucchyocean.lc.japanize内の3ファイルを使用しています
