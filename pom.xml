@@ -15,7 +15,6 @@
                 </configuration>
             </plugin>
         </plugins>
-<!--
         <resources>
             <resource>
                 <targetPath>.</targetPath>
@@ -23,10 +22,10 @@
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>
                     <include>plugin.yml</include>
+                    <!-- <include>config.yml</include> -->
                 </includes>
             </resource>
         </resources>
--->
     </build>
     <repositories>
         <repository>
