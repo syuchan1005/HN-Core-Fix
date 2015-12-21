@@ -47,6 +47,7 @@ public class Load {
 						}
 					}
 				}
+				// 言語ファイルのコピー
 				if (entry.getName().endsWith(".lang")) {
 					if (!langdir.exists()) langdir.mkdirs();
 					File langfile = new File(langdir, new File(entry.getName()).getName());
