@@ -27,7 +27,7 @@ public class Language {
 
 	public static String getString(String path, String lang) throws IOException, InvalidConfigurationException {
 		FileConfiguration langconfig;
-		File dir = new File(folder, ((lang != null) ? lang : Lang) + ".lang");
+		File dir = new File(folder, lang + ".lang");
 		if(dir.exists()) langconfig = Config.getConfig(dir);
 		else langconfig = Config.getConfig(new File(folder, Lang + ".lang"));
 		return langconfig.getString(path);
