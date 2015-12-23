@@ -22,15 +22,13 @@ public class PlayerSetting {
 }
 
 class SettingComponent {
-	private int x;
-	private int y;
+	private int slot;
 	private String name;
 	private String format;
 	private Object value;
 
 	public SettingComponent(int x, int y, String name, String format) {
-		this.x = x;
-		this.y = y;
+		this.slot = x + (y - 1) * 9;
 		this.name = name;
 		this.format = format;
 	}
@@ -43,12 +41,8 @@ class SettingComponent {
 		this.value = value;
 	}
 
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
+	public int getSlot() {
+		return slot;
 	}
 
 	public String getName() {
