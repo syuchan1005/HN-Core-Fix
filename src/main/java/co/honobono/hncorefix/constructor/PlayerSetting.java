@@ -7,9 +7,12 @@ import org.bukkit.entity.Player;
 
 public class PlayerSetting {
 
-	List<SettingComponent> Components = new ArrayList<>();
+	private String Title;
+	private List<SettingComponent> Components = new ArrayList<>();
 
-	public PlayerSetting() {}
+	public PlayerSetting(String Title) {
+		this.Title = Title;
+	}
 
 	public void setComponent(int x, int y, String name, String format) {
 		Components.add(new SettingComponent(x, y, name, format));
