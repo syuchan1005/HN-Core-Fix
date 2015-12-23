@@ -15,6 +15,10 @@ public class PlayerSetting {
 		Components.add(new SettingComponent(x, y, name, format));
 	}
 
+	public void setComponent(int slot, String name, String format) {
+		Components.add(new SettingComponent(slot, name, format));
+	}
+
 	public void showWindow(Player player) {
 
 	}
