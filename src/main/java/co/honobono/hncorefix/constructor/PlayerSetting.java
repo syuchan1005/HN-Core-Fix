@@ -27,6 +27,12 @@ class SettingComponent {
 	private String format;
 	private Object value;
 
+	public SettingComponent(int slot, String name, String format) {
+		this.slot = slot;
+		this.name = name;
+		this.format = format;
+	}
+
 	public SettingComponent(int x, int y, String name, String format) {
 		this.slot = x + (y - 1) * 9;
 		this.name = name;
