@@ -1,28 +1,17 @@
-package co.honobono.hncorefix;
+package co.honobono.hncorefix.command;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 import co.honobono.hncorefix.annotation.AddCommand;
-import co.honobono.hncorefix.annotation.AddListener;
 import co.honobono.hncorefix.util.japanese.IMEConverter;
 import co.honobono.hncorefix.util.japanese.KanaConverter;
 
-@AddListener
-public class Test implements Listener{
+public class Test {
 
 	@AddCommand(command = {"test", "t"}, description = "This is Test Command.", permission = "hncorefix.test")
 	public boolean c(CommandSender sender, String[] args) {
 		sender.sendMessage(IMEConverter.convByGoogleIME(KanaConverter.conv(args[1])));
 		return true;
 	}
-
-	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		event.getPlayer().sendMessage("実行");
-	}
-
 
 }
