@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import co.honobono.hncorefix.exception.HNInventoryOutOfSlotException;
+
 public class PlayerSetting {
 
 	private String Title;
@@ -14,11 +16,12 @@ public class PlayerSetting {
 		this.Title = Title;
 	}
 
-	public void setComponent(int x, int y, String name, String format) {
-		Components.add(new SettingComponent(x, y, name, format));
+	public void setComponent(int x, int y, String name, String format) throws HNInventoryOutOfSlotException {
+		this.setComponent(x + (y - 1) * 9, name, format);
 	}
 
-	public void setComponent(int slot, String name, String format) {
+	public void setComponent(int slot, String name, String format) throws HNInventoryOutOfSlotException {
+		if(slot > 45) throw new HNInventoryOutOfSlotException(slot);
 		Components.add(new SettingComponent(slot, name, format));
 	}
 
