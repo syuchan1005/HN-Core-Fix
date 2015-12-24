@@ -6,6 +6,6 @@ import net.md_5.bungee.api.ChatColor;
 public class HNInventoryOutOfSlotException extends Exception{
 
 	public HNInventoryOutOfSlotException(int slot) {
-		HNCoreFix.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.valueOf(slot) + "は指定範囲を超えています");
+		HNCoreFix.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.valueOf(slot) + "は指定できません");
 	}
 }
