@@ -36,7 +36,7 @@ public class PlayerSetting {
 
 	public void showWindow(Player player) {
 		int a = this.slot % 9;
-		Inventory inv = Bukkit.createInventory(null, this.slot + (a == 0 ? 0 : 9 - a));
+		Inventory inv = Bukkit.createInventory(null, this.slot + (a == 0 ? 0 : 9 - a), this.Title);
 		Components.forEach(com -> inv.setItem(com.getSlot(), com.getIcon()));
 		player.openInventory(inv);
 	}
