@@ -29,13 +29,14 @@ public class PlayerSetting {
 	}
 
 	public void setComponent(int slot, String name, ItemStack icon, String format) throws HNInventoryOutOfSlotException {
-		if(slot > 45) throw new HNInventoryOutOfSlotException(slot);
+		if(checkSlot(slot)) throw new HNInventoryOutOfSlotException(slot);
 		if(this.slot <= slot) this.slot = slot;
 		Components.add(new SettingComponent(slot, name, icon, format));
 	}
 
 	public void showWindow(Player player) {
-		Inventory inv = Bukkit.createInventory(null, this.slot);
+		int a = this.slot % 9;
+		Inventory inv = Bukkit.createInventory(null, this.slot + (a == 0 ? 0 : 9 - a));
 		Components.forEach(com -> inv.setItem(com.getSlot(), com.getIcon()));
 		player.openInventory(inv);
 	}
@@ -45,9 +46,7 @@ public class PlayerSetting {
 	}
 
 	public Map<String, Object> getSetting(Player player) {
-		if(map.containsKey(player)) {
-			return map.get(player);
-		}
+		if(map.containsKey(player)) return map.get(player);
 		return null;
 	}
 
@@ -64,6 +63,14 @@ public class PlayerSetting {
 			}
 		}
 		map.put(player, value);
+	}
+
+	private boolean checkSlot(int slot) {
+		if(slot > 45) return true;
+		for(SettingComponent com : Components) {
+			if(com.getSlot() - 9 == slot || com.getSlot() + 9 == slot) return true;
+		}
+		return false;
 	}
 
 }
