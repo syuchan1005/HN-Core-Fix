@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import co.honobono.hncorefix.exception.HNInventoryOutOfSlotException;
 
@@ -21,13 +22,13 @@ public class PlayerSetting {
 		this.Title = ChatColor.RESET + Title;
 	}
 
-	public void setComponent(int x, int y, String name, String format) throws HNInventoryOutOfSlotException {
-		this.setComponent(x + (y - 1) * 9, name, format);
+	public void setComponent(int x, int y, String name, ItemStack icon, String format) throws HNInventoryOutOfSlotException {
+		this.setComponent(x + (y - 1) * 9, name, icon, format);
 	}
 
-	public void setComponent(int slot, String name, String format) throws HNInventoryOutOfSlotException {
+	public void setComponent(int slot, String name, ItemStack icon, String format) throws HNInventoryOutOfSlotException {
 		if(slot > 45) throw new HNInventoryOutOfSlotException(slot);
-		Components.add(new SettingComponent(slot, name, format));
+		Components.add(new SettingComponent(slot, name, icon, format));
 	}
 
 	public void showWindow(Player player) {
@@ -45,9 +46,18 @@ public class PlayerSetting {
 		return null;
 	}
 
-	public void setSetting(Inventory inv) {
+	public void setSetting(Player player, Inventory inv) {
+		Map<String, Object> value = new HashMap<>();
+		for(SettingComponent com : this.Components) {
+			if(com.getFormat() == null) continue;
+			if(com.getFormat().equals("%d")) {
 
+			} else if(com.getFormat().equals("%s")) {
+
+			}
+		}
 	}
+
 }
 
 class SettingComponent {
@@ -55,13 +65,13 @@ class SettingComponent {
 	private String name;
 	private String format;
 
-	public SettingComponent(int slot, String name, String format) {
+	public SettingComponent(int slot, String name, ItemStack icon, String format) {
 		this.slot = slot;
 		this.name = name;
 		this.format = format;
 	}
 
-	public SettingComponent(int x, int y, String name, String format) {
+	public SettingComponent(int x, int y, String name, ItemStack icon, String format) {
 		this.slot = x + (y - 1) * 9;
 		this.name = name;
 		this.format = format;
