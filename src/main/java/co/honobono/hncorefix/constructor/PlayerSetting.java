@@ -50,12 +50,15 @@ public class PlayerSetting {
 		Map<String, Object> value = new HashMap<>();
 		for(SettingComponent com : this.Components) {
 			if(com.getFormat() == null) continue;
+			ItemStack item = inv.getItem(com.getSlot() + 9);
+			if(item == null) continue;
 			if(com.getFormat().equals("%d")) {
-
+				value.put(com.getName(), item.getItemMeta().getDisplayName());
 			} else if(com.getFormat().equals("%s")) {
-
+				value.put(com.getName(), (int)item.getDurability());
 			}
 		}
+		map.put(player, value);
 	}
 
 }
