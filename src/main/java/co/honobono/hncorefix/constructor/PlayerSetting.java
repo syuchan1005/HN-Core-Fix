@@ -36,9 +36,7 @@ public class PlayerSetting {
 
 	public void showWindow(Player player) {
 		Inventory inv = Bukkit.createInventory(null, this.slot);
-		for(SettingComponent com : Components) {
-			inv.setItem(com.getSlot(), com.getIcon());
-		}
+		Components.forEach(com -> inv.setItem(com.getSlot(), com.getIcon()));
 		player.openInventory(inv);
 	}
 
