@@ -20,6 +20,7 @@ import net.minecraft.server.v1_8_R3.EnumParticle;
 
 @AddListener
 public class Elevator implements Listener{
+
 	private Map<Material, Integer> bls = new HashMap<Material, Integer>();{
 		for (String a : HNCoreFix.getConfigFile().getStringList("Elevator")) {
 			String[] b = a.split(":");
