@@ -1,4 +1,4 @@
-name: HN-Core-Fix
+name: ${pom.artifactId}
 version: ${pom.version}
 description: This is HonobonoServer plugin.
 author: syu_chan_1005
