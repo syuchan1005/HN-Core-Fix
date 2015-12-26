@@ -5,16 +5,26 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import co.honobono.hncorefix.annotation.AddListener;
+import co.honobono.hncorefix.util.Util;
 import co.honobono.hncorefix.util.japanese.IMEConverter;
 import co.honobono.hncorefix.util.japanese.KanaConverter;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 @AddListener
-public class Chat implements Listener{
+public class Chat implements Listener {
 
 	@EventHandler
 	public void onASyncPlayerChat(AsyncPlayerChatEvent event) {
 		String msg = event.getMessage();
-		String convmsg = IMEConverter.convByGoogleIME(KanaConverter.conv(msg));
-		event.setMessage(String.format("%s(%s)", msg, convmsg));
+		event.setFormat(
+				Util.color(
+						String.format("<%s%s>&r%s", PermissionsEx.getUser(event.getPlayer()).getPrefix(),
+								event.getPlayer().getDisplayName(), msg)
+						+ (hasZenkaku(msg) ? "" : "(" + IMEConverter.convByGoogleIME(KanaConverter.conv(msg)) + ")"),
+						null));
+	}
+
+	public static boolean hasZenkaku(String text) {
+		return text.length() != text.getBytes().length;
 	}
 }
