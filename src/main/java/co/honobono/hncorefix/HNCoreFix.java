@@ -1,6 +1,7 @@
 package co.honobono.hncorefix;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,12 +15,14 @@ import co.honobono.hncorefix.util.Config;
 
 public class HNCoreFix extends JavaPlugin {
 	private static Plugin instance;
+	private static Logger log;
 	private static FileConfiguration config;
 	private static CommandManager manager = new CommandManager();
 
 	@Override
 	public void onEnable() {
 		instance = this;
+		log = this.getLogger();
 		PluginCommand pc = this.getCommand("hn");
 		pc.setExecutor(this);
 		pc.setTabCompleter(manager);
@@ -45,5 +48,9 @@ public class HNCoreFix extends JavaPlugin {
 
 	public static FileConfiguration getConfigFile() {
 		return config;
+	}
+
+	public static Logger getLog() {
+		return log;
 	}
 }
