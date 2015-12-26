@@ -8,4 +8,8 @@ public class HNInventoryOutOfSlotException extends Exception{
 	public HNInventoryOutOfSlotException(int slot) {
 		HNCoreFix.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.valueOf(slot) + "は指定できません");
 	}
+
+	public HNInventoryOutOfSlotException(String msg) {
+		HNCoreFix.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + msg + "は指定できません");
+	}
 }
