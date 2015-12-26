@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,19 +26,25 @@ public class PlayerSetting {
 	}
 
 	public void setComponent(int x, int y, String name, ItemStack icon, String format) throws HNInventoryOutOfSlotException {
-		this.setComponent(x + (y - 1) * 9, name, icon, format);
+		if(x == 0 || y == 0 || x >= 9 || y >= 6) throw new HNInventoryOutOfSlotException("x: " + x + "y: " + y);
+		this.setComponent((x - 1) + (y - 1) * 9, name, icon, format);
 	}
 
 	public void setComponent(int slot, String name, ItemStack icon, String format) throws HNInventoryOutOfSlotException {
-		if(checkSlot(slot)) throw new HNInventoryOutOfSlotException(slot);
+		if(checkSlot(slot) && format != null) throw new HNInventoryOutOfSlotException(slot);
 		if(this.slot <= slot) this.slot = slot;
 		Components.add(new SettingComponent(slot, name, icon, format));
 	}
 
 	public void showWindow(Player player) {
 		int a = this.slot % 9;
-		Inventory inv = Bukkit.createInventory(null, this.slot + (a == 0 ? 0 : 9 - a), this.Title);
-		Components.forEach(com -> inv.setItem(com.getSlot(), com.getIcon()));
+		Inventory inv = Bukkit.createInventory(null, this.slot + (a == 0 ? 0 : 9 - a) + 9, this.Title);
+		for(SettingComponent com : Components) {
+			inv.setItem(com.getSlot(), com.getIcon());
+			if(com.getFormat() != null) {
+				inv.setItem(com.getSlot() + 9, new ItemStack(Material.INK_SACK, 1, (short)1));
+			}
+		}
 		player.openInventory(inv);
 	}
 
