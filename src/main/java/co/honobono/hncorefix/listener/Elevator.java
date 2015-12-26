@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +15,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import co.honobono.hncorefix.HNCoreFix;
 import co.honobono.hncorefix.annotation.AddListener;
+import co.honobono.hncorefix.util.Util;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 
 @AddListener
@@ -23,7 +23,7 @@ public class Elevator implements Listener{
 
 	private Map<Material, Integer> bls = new HashMap<Material, Integer>();{
 		for (String a : HNCoreFix.getConfigFile().getStringList("Elevator")) {
-			String[] b = a.split(":");
+			String[] b = a.split(": ");
 			bls.put(Material.getMaterial(b[0]), Integer.valueOf(b[1]));
 		}
 	}
@@ -43,7 +43,7 @@ public class Elevator implements Listener{
 					&& loc.add(0, 1, 0).getBlock().getType().isTransparent()) {
 				player.teleport(loc.subtract(0, 1, 0));
 				player.playSound(loc, Sound.ENDERMAN_TELEPORT, 10, 1);
-				Particle(player, EnumParticle.PORTAL, loc.subtract(0, 1, 0), 5);
+				Util.normalParticle(player, EnumParticle.PORTAL, loc.subtract(0, 1, 0), 5);
 				return;
 			}
 		}
@@ -70,15 +70,11 @@ public class Elevator implements Listener{
 					&& loc.add(0, 1, 0).getBlock().getType().isTransparent()) {
 				player.teleport(loc.subtract(0, 1, 0));
 				player.playSound(loc, Sound.ENDERMAN_TELEPORT, 10, 1);
-				Particle(player, EnumParticle.PORTAL, loc.subtract(0, 1, 0), 5);
+				Util.normalParticle(player, EnumParticle.PORTAL, loc.subtract(0, 1, 0), 5);
 				break;
 			} else {
 				continue;
 			}
 		}
-	}
-
-	public static void Particle(Player player , EnumParticle particle , Location loc , int num) {
-		((CraftWorld) player.getWorld()).getHandle().a(particle, loc.getX(), loc.getY()+2, loc.getZ(), num, 0.32D, 0.32D, 0.32D, 0);
 	}
 }
