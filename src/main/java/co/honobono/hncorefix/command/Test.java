@@ -17,7 +17,7 @@ public class Test {
 		try {
 			sp.setComponent(1, 1, "name", new ItemStack(Material.ACTIVATOR_RAIL), null);
 			sp.setComponent(2, 4, "name", new ItemStack(Material.TORCH), "%s");
-			sp.setComponent(2, 5, "name", new ItemStack(Material.TORCH), "%s");
+			sp.setComponent(3, 5, "name", new ItemStack(Material.TORCH), "%s");
 			sp.setComponent(3, 4, "name", new ItemStack(Material.TORCH), null);
 			sp.setComponent(4, 4, "name", new ItemStack(Material.TORCH), "%d");
 		} catch (HNInventoryOutOfSlotException e) {
