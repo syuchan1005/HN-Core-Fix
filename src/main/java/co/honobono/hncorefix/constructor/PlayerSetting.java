@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import co.honobono.hncorefix.exception.HNInventoryOutOfSlotException;
 
-public class PlayerSetting {
+/*public*/ class PlayerSetting {
 
 	private String Title;
 	private int slot;
