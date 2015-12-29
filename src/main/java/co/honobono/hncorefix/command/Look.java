@@ -1,12 +1,16 @@
 package co.honobono.hncorefix.command;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
+import java.util.zip.GZIPInputStream;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -20,7 +24,6 @@ import com.maxmind.geoip2.model.CityResponse;
 
 import co.honobono.hncorefix.HNCoreFix;
 import co.honobono.hncorefix.annotation.AddCommand;
-import net.md_5.bungee.api.ChatColor;
 
 public class Look {
 	private static Plugin instance = HNCoreFix.getInstance();
@@ -65,21 +68,26 @@ public class Look {
 	}
 
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
 	public static String getTime(long Mills) {
 		return format.format(Mills);
 	}
 
-	static DatabaseReader DBReader = null;{
+	private static File db = new File(instance.getDataFolder(), "GeoLite2-City.mmdb");
+	private static DatabaseReader DBReader = null;{
 		try {
-			DBReader = new DatabaseReader.Builder(new FileInputStream(new File(instance.getDataFolder(), "GeoLite2-City.mmdb"))).build();
+			DBReader = new DatabaseReader.Builder(new FileInputStream(db)).build();
 		} catch (IOException e) {
 			HNCoreFix.getLog().info("DBファイルが存在しません。");
 		}
 	}
+
 	public static String getLoc(String Address) {
 		final String IP = Address.split(":")[0].substring(1);
-		if (DBReader == null) return "DBファイルが存在しません。";
-		if (IP.equals("127.0.0.1")) return ("localhostのため特定できません。");
+		if (DBReader == null)
+			return "DBファイルが存在しません。";
+		if (IP.equals("127.0.0.1"))
+			return ("localhostのため特定できません。");
 		try {
 			CityResponse res = DBReader.city(InetAddress.getByName(IP));
 			return res.getContinent().getNames().get("ja") + "/" + res.getCountry().getNames().get("ja") + "/"
@@ -90,4 +98,45 @@ public class Look {
 		}
 	}
 
+	public static void checkDB() {
+		if (db.exists()) {
+			return;
+		} else {
+			HNCoreFix.getLog().info("DBファイルが存在しません\nダウンロードを開始します...");
+		}
+		GZIPInputStream gzipInStream = null;
+		try {
+			gzipInStream = new GZIPInputStream(
+					new BufferedInputStream(new FileInputStream(new File(db.getAbsolutePath() + ".gz"))));
+			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+			while (true) {
+				int iRead = gzipInStream.read();
+				if (iRead < 0)
+					break;
+				outStream.write(iRead);
+			}
+			outStream.flush();
+			outStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			if (gzipInStream != null) {
+				try {
+					gzipInStream.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		} finally {
+			if (gzipInStream != null) {
+				try {
+					gzipInStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		try {
+			DBReader = new DatabaseReader.Builder(new FileInputStream(db)).build();
+		} catch (IOException e) {}
+	}
 }
