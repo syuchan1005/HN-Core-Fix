@@ -1,13 +1,6 @@
 package co.honobono.hncorefix.command;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
-import java.util.zip.GZIPInputStream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,20 +9,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
-import com.maxmind.geoip2.model.CityResponse;
-
-import co.honobono.hncorefix.HNCoreFix;
 import co.honobono.hncorefix.annotation.AddCommand;
 
 public class Look {
-	private static Plugin instance = HNCoreFix.getInstance();
 
-	@AddCommand(command = {
-			"look" }, description = "プレイヤーの詳細情報を表示します", permission = "hncorefix.look", usage = "<command> <PlayerName>")
+	@AddCommand(command = { "look" }, description = "プレイヤーの詳細情報を表示します", permission = "hncorefix.look", usage = "<command> <PlayerName>")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player1 = null;
 		if (args.length == 1) {
@@ -62,7 +47,7 @@ public class Look {
 			sender.sendMessage("      Z: " + loc.getZ());
 			sender.sendMessage("  Pitch: " + loc.getPitch());
 			sender.sendMessage("    Yaw: " + loc.getYaw());
-			sender.sendMessage("IPアドレス: " + player1.getAddress() + "(" + getLoc(player1.getAddress().toString()) + ")");
+			sender.sendMessage("IPアドレス: " + player1.getAddress()/* + "(" + getLoc(player1.getAddress().toString()) + ")"*/);
 		}
 		return true;
 	}
@@ -73,7 +58,7 @@ public class Look {
 		return format.format(Mills);
 	}
 
-	private static File db = new File(instance.getDataFolder(), "GeoLite2-City.mmdb");
+/*	private static File db = new File(instance.getDataFolder(), "GeoLite2-City.mmdb");
 	private static DatabaseReader DBReader = null;{
 		try {
 			DBReader = new DatabaseReader.Builder(new FileInputStream(db)).build();
@@ -138,5 +123,5 @@ public class Look {
 		try {
 			DBReader = new DatabaseReader.Builder(new FileInputStream(db)).build();
 		} catch (IOException e) {}
-	}
+	}*/
 }
