@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import co.honobono.hncorefix.command.Look;
 import co.honobono.hncorefix.constructor.CommandManager;
 import co.honobono.hncorefix.util.Config;
 
@@ -27,6 +28,7 @@ public class HNCoreFix extends JavaPlugin {
 		pc.setExecutor(this);
 		pc.setTabCompleter(manager);
 		this.saveDefaultConfig();
+		Look.checkDB();
 		try {
 			config = Config.getConfig(new File(this.getDataFolder(), "config.yml"));
 			Load.Register(this, manager);
