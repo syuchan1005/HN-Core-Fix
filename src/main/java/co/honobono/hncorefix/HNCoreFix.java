@@ -39,7 +39,9 @@ public class HNCoreFix extends JavaPlugin {
 			if(sender.hasPermission("hn.help")) manager.sendHalp(sender); else sender.sendMessage("You don't have Permission");
 			return true;
 		}
-		return manager.run(sender, args);
+		String[] args1 = new String[args.length - 1];
+		System.arraycopy(args,1 ,args1 ,0 ,args.length - 1);
+		return manager.run(sender, args1);
 	}
 
 	public static Plugin getInstance() {
