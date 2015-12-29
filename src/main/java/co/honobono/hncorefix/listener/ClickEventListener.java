@@ -15,19 +15,21 @@ public class ClickEventListener implements Listener {
 
 	@EventHandler
 	public void CallClickEvent(PlayerInteractEvent event) {
-		Event call;
+		Event call = null;
 		switch (event.getAction()) {
 		case LEFT_CLICK_AIR:
 		case LEFT_CLICK_BLOCK:
 			call = new PlayerLeftClickEvent(event.getPlayer(), event.getAction(), event.getItem(), event.getClickedBlock(), event.getBlockFace());
+			break;
 		case RIGHT_CLICK_AIR:
 		case RIGHT_CLICK_BLOCK:
 			call = new PlayerRightClickEvent(event.getPlayer(), event.getAction(), event.getItem(), event.getClickedBlock(), event.getBlockFace());
-		// case PHYSICAL:
+			break;
+		case PHYSICAL:
 		default:
-			call = event;
+			break;
 		}
-		Bukkit.getServer().getPluginManager().callEvent(call);
+		if(call != null) Bukkit.getServer().getPluginManager().callEvent(call);
 	}
 
 }
