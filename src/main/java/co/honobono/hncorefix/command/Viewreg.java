@@ -17,11 +17,10 @@ import co.honobono.hncorefix.util.Util;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 
-public class viewreg {
+public class Viewreg {
 
 	@SuppressWarnings("deprecation")
-	@AddCommand(command = {
-			"viewreg" }, description = "This is View in Region Command.", permission = "hncorefix.viewreg")
+	@AddCommand(command = { "viewreg" }, description = "This is View in Region Command.", permission = "hncorefix.viewreg")
 	public boolean c(CommandSender sender, String[] args) {
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("ゲーム内から実行して下さい.");
@@ -43,7 +42,7 @@ public class viewreg {
 							new BukkitRunnable() {
 								@Override
 								public void run() {
-									player.sendBlockChange(loc, loc.getBlock().getType(), (byte) 0);
+									player.sendBlockChange(loc, loc.getBlock().getType(), loc.getBlock().getData());
 								}
 							}, 100L);
 					PacketPlayOutWorldParticles packet = (x % 2 == 0 && y % 2 == 0 && z % 2 == 0) ? new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, false, (float) (x + 0.5D),

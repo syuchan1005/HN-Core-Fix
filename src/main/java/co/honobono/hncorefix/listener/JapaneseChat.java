@@ -11,7 +11,7 @@ import co.honobono.hncorefix.util.japanese.KanaConverter;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 @AddListener
-public class Chat implements Listener {
+public class JapaneseChat implements Listener {
 
 	@EventHandler
 	public void onASyncPlayerChat(AsyncPlayerChatEvent event) {
