@@ -1,6 +1,7 @@
 package co.honobono.hncorefix.command;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -37,7 +38,7 @@ public class Viewreg {
 				for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
 					Location loc = new Location(player.getWorld(), x, y, z);
 					player.sendBlockChange(loc, Material.AIR, (byte) 0);
-					Util.normalParticle(player, EnumParticle.REDSTONE, loc, 3);
+					player.getLocation().getWorld().playEffect(player.getLocation(), Effect.PORTAL, 5);
 					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(HNCoreFix.getInstance(),
 							new BukkitRunnable() {
 								@Override

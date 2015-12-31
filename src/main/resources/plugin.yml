@@ -6,6 +6,7 @@ website: https://twitter.com/syu_chan_1005/
 database: false
 main: co.honobono.hncorefix.HNCoreFix
 prefix: HN-Core
+depend: [PermissionsEx, Multiverse-Core]
 commands:
     hn:
         usage: /hn - to see the help

@@ -1,1 +1,1 @@
-DefaultLanguages: ja_JP#エレベーターに使うことのできるブロックの登録です BLOCK_NAME:<距離> のように入力して下さいElevator: - REDSTONE_BLOCK: 8 - LAPIS_BLOCK: 16 - IRON_BLOCK: 32 - EMERALD_BLOCK: 64 - GOLD_BLOCK: 128 - DIAMOND_BLOCK: 256
+DefaultLanguages: ja_JP#エレベーターに使うことのできるブロックの登録です BLOCK_NAME:<距離> のように入力して下さいElevator: - REDSTONE_BLOCK:8 - LAPIS_BLOCK:16 - IRON_BLOCK:32 - EMERALD_BLOCK:64 - GOLD_BLOCK:128 - DIAMOND_BLOCK:256

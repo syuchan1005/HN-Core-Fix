@@ -1,7 +1,6 @@
 package co.honobono.hncorefix;
 
 import java.io.File;
-import java.util.Timer;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
@@ -11,7 +10,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import co.honobono.hncorefix.autorun.ResourcesGen;
 import co.honobono.hncorefix.constructor.CommandManager;
 import co.honobono.hncorefix.util.Config;
 
@@ -20,7 +18,6 @@ public class HNCoreFix extends JavaPlugin {
 	private static Logger log;
 	private static FileConfiguration config;
 	private static CommandManager manager = new CommandManager();
-	private static Timer timer = new Timer();
 
 	@Override
 	public void onEnable() {
@@ -30,7 +27,7 @@ public class HNCoreFix extends JavaPlugin {
 		pc.setExecutor(this);
 		pc.setTabCompleter(manager);
 		this.saveDefaultConfig();
-		timer.scheduleAtFixedRate(new ResourcesGen(), 0, 120000);
+		// new ResourcesGen().runTaskTimer(this, 0, 18000L);
 		try {
 			config = Config.getConfig(new File(this.getDataFolder(), "config.yml"));
 			Load.Register(this, manager);
@@ -43,9 +40,7 @@ public class HNCoreFix extends JavaPlugin {
 			if(sender.hasPermission("hn.help")) manager.sendHalp(sender); else sender.sendMessage("You don't have Permission");
 			return true;
 		}
-		String[] args1 = new String[args.length - 1];
-		System.arraycopy(args,1 ,args1 ,0 ,args.length - 1);
-		return manager.run(sender, args1);
+		return manager.run(sender, args);
 	}
 
 	public static Plugin getInstance() {
