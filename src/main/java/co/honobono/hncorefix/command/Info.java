@@ -7,7 +7,7 @@ import co.honobono.hncorefix.annotation.AddCommand;
 
 public class Info {
 
-	@AddCommand(command = { "info", "i" }, description = "This is Info Command.", permission = "hncorefix.info")
+	@AddCommand(command = "info", alias = { "i" }, description = "This is Info Command.", permission = "hncorefix.info")
 	public boolean command(CommandSender sender, String[] args) {
 		Runtime run = Runtime.getRuntime();
 		sender.sendMessage(ChatColor.GREEN + "======" + ChatColor.BLUE + "Info" + ChatColor.GREEN + "======");

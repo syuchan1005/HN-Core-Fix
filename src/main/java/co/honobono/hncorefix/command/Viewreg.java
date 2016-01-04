@@ -21,7 +21,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 public class Viewreg {
 
 	@SuppressWarnings("deprecation")
-	@AddCommand(command = { "viewreg" }, description = "This is View in Region Command.", permission = "hncorefix.viewreg")
+	@AddCommand(command = "viewreg", description = "This is View in Region Command.", permission = "hncorefix.viewreg")
 	public boolean c(CommandSender sender, String[] args) {
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("ゲーム内から実行して下さい.");

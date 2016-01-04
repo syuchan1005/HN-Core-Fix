@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface AddCommand {
-	String[] command();
+	String command();
+	String[] alias() default { };
 	String description();
 	String permission();
 	String permissionmessage() default "You don't have permission.";

@@ -17,7 +17,7 @@ import co.honobono.hncorefix.annotation.AddCommand;
 
 public class Fire {
 
-	@AddCommand(command = { "fire" }, description = "This is Fire", permission = "hncorefix.fire")
+	@AddCommand(command = "fire", description = "This is Fire", permission = "hncorefix.fire")
 	public boolean c(CommandSender sender, String[] args) {
 		Location loc;
 		if (sender instanceof Player) {

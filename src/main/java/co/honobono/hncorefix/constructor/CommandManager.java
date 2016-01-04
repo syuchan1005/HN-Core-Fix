@@ -14,7 +14,6 @@ import org.bukkit.command.TabCompleter;
 
 import co.honobono.hncorefix.HNCoreFix;
 import co.honobono.hncorefix.annotation.AddCommand;
-import co.honobono.hncorefix.exception.HNCommandOverlapException;
 import co.honobono.hncorefix.util.Util;
 
 public class CommandManager implements TabCompleter {
@@ -30,7 +29,7 @@ public class CommandManager implements TabCompleter {
 			args[0] = "help";
 		}
 		for (Map.Entry<CommandBase, Method> e : map.entrySet()) {
-			if (Util.hasString(args[0], e.getKey().getCommand())) {
+			if (e.getKey().getCommand().equalsIgnoreCase(args[0]) || Util.hasString(args[0], e.getKey().getAlias())) {
 				Method method = e.getValue();
 				try {
 					String[] args1 = new String[args.length - 1];
@@ -46,20 +45,15 @@ public class CommandManager implements TabCompleter {
 		return false;
 	}
 
-	@AddCommand(command = { "help" }, description = "This is Help Command.", permission = "hncorefix.help")
+	@AddCommand(command = "help", description = "This is Help Command.", permission = "hncorefix.help")
 	public boolean c(CommandSender sender, String[] args) {
 		HNCoreFix.getManager().sendHalp(sender);
 		return true;
 	}
 
 	public void putMap(CommandBase base, Method m) {
-		try {
-			hasCommand(base.getCommand());
-		} catch (HNCommandOverlapException e) {
-			e.printStackTrace();
-			return;
-		}
-		for (String s : base.getCommand())
+		commands.add(base.getCommand());
+		for (String s : base.getAlias())
 			commands.add(s);
 		map.put(base, m);
 	}
@@ -68,29 +62,19 @@ public class CommandManager implements TabCompleter {
 		return map;
 	}
 
-	public boolean hasCommand(String[] a) throws HNCommandOverlapException {
-		for (String b : a) {
-			if (commands.contains(b)) {
-				throw new HNCommandOverlapException(b);
-			}
-		}
-		return true;
-	}
-
 	public void sendHalp(CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "======" + ChatColor.BLUE + "Command Help" + ChatColor.GREEN + "======");
 		for (Map.Entry<CommandBase, Method> e : map.entrySet()) {
 			CommandBase cb = e.getKey();
-			sender.sendMessage(formatCommand(cb.getCommand()) + ":" + cb.getUsage());
+			sender.sendMessage(formatCommand(cb.getCommand(), cb.getAlias()) + ":" + cb.getUsage());
 		}
 	}
 
-	private static String formatCommand(String[] str) {
-		String s = str[0];
-		str[0] = "";
-		if (str.length >= 2) {
+	private static String formatCommand(String command, String[] alias) {
+		String s = command;
+		if (alias.length >= 1) {
 			s = s + "(";
-			for (String s1 : str)
+			for (String s1 : alias)
 				s = s + s1;
 			s = s + ")";
 		}

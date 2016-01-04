@@ -42,7 +42,7 @@ public class Load {
 					for (Method m : clazz.getMethods()) {
 						if (hasAddCommand(m.getAnnotations()) && hasArgs(m.getParameterTypes())) {
 							AddCommand a = getCommand(m.getAnnotations());
-							manager.putMap(new CommandBase(a.command(), a.description(), a.permission(),
+							manager.putMap(new CommandBase(a.command(), a.alias(), a.description(), a.permission(),
 									a.permissionmessage(), a.usage()), m);
 						}
 					}

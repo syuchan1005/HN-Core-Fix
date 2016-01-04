@@ -14,7 +14,7 @@ import co.honobono.hncorefix.annotation.AddCommand;
 
 public class Look {
 
-	@AddCommand(command = { "look" }, description = "プレイヤーの詳細情報を表示します", permission = "hncorefix.look", usage = "<command> <PlayerName>")
+	@AddCommand(command = "look", description = "プレイヤーの詳細情報を表示します", permission = "hncorefix.look", usage = "<command> <PlayerName>")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player1 = null;
 		if (args.length == 1) {
