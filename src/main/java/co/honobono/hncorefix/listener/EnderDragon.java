@@ -6,13 +6,16 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import co.honobono.hncorefix.HNCoreFix;
@@ -24,8 +27,10 @@ public class EnderDragon implements Listener {
 
 	@EventHandler
 	public void Fireball(EntityTargetEvent event) {
-		if(!(event.getEntity().getType() == EntityType.ENDER_DRAGON)) return;
-		if (!(event.getTarget() instanceof Player)) return;
+		if (!(event.getEntity().getType() == EntityType.ENDER_DRAGON))
+			return;
+		if (!(event.getTarget() instanceof Player))
+			return;
 		Player player = (Player) event.getTarget();
 		Location loc = player.getLocation();
 		for (float i = 0; i < 360; i = (float) (i + 0.5)) {
@@ -36,7 +41,9 @@ public class EnderDragon implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				((TNTPrimed) loc.getWorld().spawn(loc, TNTPrimed.class)).setFuseTicks(1);
+				TNTPrimed tnt = ((TNTPrimed) loc.getWorld().spawn(loc, TNTPrimed.class));
+				tnt.setFuseTicks(1);
+				tnt.setMetadata("ENDTNT", new FixedMetadataValue(HNCoreFix.getInstance(), true));
 				loc.subtract(3, 1, 3);
 				new BukkitRunnable() {
 					@Override
@@ -56,4 +63,15 @@ public class EnderDragon implements Listener {
 			}
 		}.runTaskLater(HNCoreFix.getInstance(), 70L);
 	}
+
+	@EventHandler
+	public void onBomberTntDamagePlayer(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof Player && event.getDamager() instanceof TNTPrimed) {
+			if(!event.getDamager().getMetadata("ENDTNT").get(0).asBoolean()) return;
+			Player player = (Player) event.getEntity();
+			if(player.getLocation().getWorld().getEnvironment() != Environment.THE_END) return;
+			player.setHealth(player.getHealth() - 8);
+		}
+	}
+
 }
