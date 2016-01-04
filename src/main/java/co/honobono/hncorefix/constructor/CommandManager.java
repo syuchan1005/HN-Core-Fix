@@ -46,7 +46,7 @@ public class CommandManager implements TabCompleter {
 		return false;
 	}
 
-	@AddCommand(command = { "help", "" }, description = "This is Help Command.", permission = "hncorefix.help")
+	@AddCommand(command = { "help" }, description = "This is Help Command.", permission = "hncorefix.help")
 	public boolean c(CommandSender sender, String[] args) {
 		HNCoreFix.getManager().sendHalp(sender);
 		return true;
@@ -62,6 +62,10 @@ public class CommandManager implements TabCompleter {
 		for (String s : base.getCommand())
 			commands.add(s);
 		map.put(base, m);
+	}
+
+	public Map<CommandBase, Method> getMap() {
+		return map;
 	}
 
 	public boolean hasCommand(String[] a) throws HNCommandOverlapException {

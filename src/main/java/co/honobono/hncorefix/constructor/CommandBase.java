@@ -1,6 +1,14 @@
 package co.honobono.hncorefix.constructor;
 
+import java.util.Arrays;
+
 public class CommandBase {
+
+	@Override
+	public String toString() {
+		return "CommandBase [command=" + Arrays.toString(command) + ", description=" + description + ", permission="
+				+ permission + ", permissionmessage=" + permissionmessage + ", usage=" + usage + "]";
+	}
 
 	private String[] command;
 	private String description;
