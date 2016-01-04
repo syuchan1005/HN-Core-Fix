@@ -11,33 +11,29 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 
-import co.honobono.hncorefix.annotation.AddCommand;
 import co.honobono.hncorefix.exception.HNCommandOverlapException;
 import co.honobono.hncorefix.util.Util;
 
 public class CommandManager implements TabCompleter {
-	private Map<CommandBase, Method> map;
+	private Map<CommandBase, Method> map = new HashMap<>();
 	private List<String> commands = new ArrayList<>();
 
 	public CommandManager() {
-		map = new HashMap<>();
 	}
 
 	public boolean run(CommandSender sender, String[] args) {
+		if(args.length == 0) {
+			args = new String[1];
+			args[0] = "help";
+		}
 		for (Map.Entry<CommandBase, Method> e : map.entrySet()) {
 			if (Util.hasString(args[0], e.getKey().getCommand())) {
 				Method method = e.getValue();
 				try {
-					if(!(sender instanceof Player) || sender.hasPermission(((AddCommand)method.getAnnotation(AddCommand.class)).permission())) {
-						String[] args1 = new String[args.length - 1];
-						System.arraycopy(args,1 ,args1 ,0 ,args.length - 1);
-						return (boolean) method.invoke(method.getDeclaringClass().newInstance(), sender, args1);
-					} else {
-						sender.sendMessage(((AddCommand)method.getAnnotation(AddCommand.class)).permissionmessage());
-						return true;
-					}
+					String[] args1 = new String[args.length - 1];
+					System.arraycopy(args, 1, args1, 0, args.length - 1);
+					return (boolean) method.invoke(method.getDeclaringClass().newInstance(), sender, args1);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 						| SecurityException | InstantiationException e1) {
 					e1.printStackTrace();
@@ -71,7 +67,7 @@ public class CommandManager implements TabCompleter {
 
 	public void sendHalp(CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "======" + ChatColor.BLUE + "Command Help" + ChatColor.GREEN + "======");
-		for(Map.Entry<CommandBase, Method> e : map.entrySet()) {
+		for (Map.Entry<CommandBase, Method> e : map.entrySet()) {
 			CommandBase cb = e.getKey();
 			sender.sendMessage(formatCommand(cb.getCommand()) + ":" + cb.getUsage());
 		}
@@ -80,9 +76,10 @@ public class CommandManager implements TabCompleter {
 	private static String formatCommand(String[] str) {
 		String s = str[0];
 		str[0] = "";
-		if(str.length >= 2) {
+		if (str.length >= 2) {
 			s = s + "(";
-			for(String s1 : str) s = s + s1;
+			for (String s1 : str)
+				s = s + s1;
 			s = s + ")";
 		}
 		return s;
@@ -90,7 +87,8 @@ public class CommandManager implements TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if(args.length == 1) return commands;
+		if (args.length == 1)
+			return commands;
 		return null;
 	}
 }
