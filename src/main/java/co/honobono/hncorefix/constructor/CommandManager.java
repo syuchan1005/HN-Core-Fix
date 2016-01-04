@@ -12,6 +12,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import co.honobono.hncorefix.HNCoreFix;
+import co.honobono.hncorefix.annotation.AddCommand;
 import co.honobono.hncorefix.exception.HNCommandOverlapException;
 import co.honobono.hncorefix.util.Util;
 
@@ -42,6 +44,12 @@ public class CommandManager implements TabCompleter {
 			}
 		}
 		return false;
+	}
+
+	@AddCommand(command = { "help", "" }, description = "This is Help Command.", permission = "hncorefix.help")
+	public boolean c(CommandSender sender, String[] args) {
+		HNCoreFix.getManager().sendHalp(sender);
+		return true;
 	}
 
 	public void putMap(CommandBase base, Method m) {
