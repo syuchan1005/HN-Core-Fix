@@ -1,24 +1,27 @@
 package co.honobono.hncorefix.runnable;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class EnderDragonMove extends BukkitRunnable {
-	public static World world = Bukkit.getWorld("end");
-	public static boolean stop = false;
-	public Location last;
+	public static List<World> worlds = Bukkit.getWorlds().stream()
+			.filter(w -> w.getEnvironment() == Environment.THE_END).collect(Collectors.toList());
 
 	@Override
 	public void run() {
-		if(world == null) return;
-		for (Entity e : world.getEntities()) {
-			if (e.getType() == EntityType.ENDER_DRAGON) {
+		for (World world : worlds) {
+			for (Entity e : world.getEntitiesByClass(EnderDragon.class)) {
 				// 地形破壊
 				Location loc = e.getLocation();
 				loc.getBlock().setType(Material.OBSIDIAN);
@@ -31,21 +34,19 @@ public class EnderDragonMove extends BukkitRunnable {
 					for (int y = Y - radius + 1; y <= Y + radius; y++) {
 						for (int z = Z - radius; z <= Z + radius; z++) {
 							if ((X - x) * (X - x) + (Y - y) * (Y - y) + (Z - z) * (Z - z) <= radiusSquared) {
-								new Location(world, x, y, z).getBlock().setType(Material.AIR);
+								Block b = new Location(world, x, y, z).getBlock();
+								if (b.getType() != Material.BEDROCK) {
+									b.setType(Material.AIR);
+								}
 							}
 						}
 					}
 				}
 				// 最大体力増加
-				Damageable d = (Damageable)e;
-				if(d.getMaxHealth() == 200.0D) {
+				Damageable d = (Damageable) e;
+				if (d.getMaxHealth() == 200.0D) {
 					d.setMaxHealth(600.0D);
 					d.setHealth(600.0D);
-				}
-				if(stop) {
-					e.teleport(this.last);
-				} else {
-					this.last = loc;
 				}
 			}
 		}

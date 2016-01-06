@@ -3,17 +3,22 @@ package co.honobono.hncorefix.listener;
 import java.util.Random;
 
 import org.bukkit.Effect;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,7 +27,7 @@ import co.honobono.hncorefix.HNCoreFix;
 import co.honobono.hncorefix.annotation.AddListener;
 
 @AddListener
-public class EnderDragon implements Listener {
+public class Enderdragon implements Listener {
 	private static Random ran = new Random();
 
 	@EventHandler
@@ -74,4 +79,23 @@ public class EnderDragon implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onRevive(EntityDamageEvent event) {
+		if(event.getEntity().getType() != EntityType.ENDER_DRAGON) return;
+		EnderDragon dragon = (EnderDragon) event.getEntity();
+		if((((Damageable) dragon).getHealth() - event.getFinalDamage()) > 0) return;
+		dragon.playEffect(EntityEffect.DEATH);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				dragon.remove();
+			}
+		}.runTaskLater(HNCoreFix.getInstance(), 200L);
+	}
+
+	@EventHandler
+	public void onChangeEXP(EntityDeathEvent event) {
+		if(event.getEntity().getType() == EntityType.ENDER_DRAGON)
+		event.setDroppedExp(0);
+	}
 }

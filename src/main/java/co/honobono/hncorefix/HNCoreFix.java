@@ -28,7 +28,6 @@ public class HNCoreFix extends JavaPlugin {
 		pc.setExecutor(this);
 		pc.setTabCompleter(manager);
 		this.saveDefaultConfig();
-		// new ResourcesGen().runTaskTimer(this, 0, 18000L);
 		try {
 			config = Config.getConfig(new File(this.getDataFolder(), "config.yml"));
 			Load.Register(this, manager);
