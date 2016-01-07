@@ -11,6 +11,7 @@ import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -22,6 +23,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import co.honobono.hncorefix.HNCoreFix;
 import co.honobono.hncorefix.annotation.AddListener;
@@ -72,30 +74,46 @@ public class Enderdragon implements Listener {
 	@EventHandler
 	public void onBomberTntDamagePlayer(EntityDamageByEntityEvent event) {
 		if (event.getEntity() instanceof Player && event.getDamager() instanceof TNTPrimed) {
-			if(!event.getDamager().getMetadata("ENDTNT").get(0).asBoolean()) return;
+			if (!event.getDamager().getMetadata("ENDTNT").get(0).asBoolean())
+				return;
 			Player player = (Player) event.getEntity();
-			if(player.getLocation().getWorld().getEnvironment() != Environment.THE_END) return;
-			player.setHealth(player.getHealth() - 8);
+			if (player.getLocation().getWorld().getEnvironment() != Environment.THE_END)
+				return;
+			player.setHealth(player.getHealth() - 8); // TODO
 		}
 	}
 
 	@EventHandler
 	public void onRevive(EntityDamageEvent event) {
-		if(event.getEntity().getType() != EntityType.ENDER_DRAGON) return;
-		EnderDragon dragon = (EnderDragon) event.getEntity();
-		if((((Damageable) dragon).getHealth() - event.getFinalDamage()) > 0) return;
-		dragon.playEffect(EntityEffect.DEATH);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				dragon.remove();
-			}
-		}.runTaskLater(HNCoreFix.getInstance(), 200L);
+		if (!(event.getEntity().getMetadata("phase2").size() >= 1
+				&& event.getEntity().getMetadata("phase2").get(0).asBoolean())) {
+			if (event.getEntity().getType() != EntityType.ENDER_DRAGON)
+				return;
+			EnderDragon dragon = (EnderDragon) event.getEntity();
+			if ((((Damageable) dragon).getHealth() - event.getFinalDamage()) > 0)
+				return;
+			dragon.playEffect(EntityEffect.DEATH);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					dragon.remove();
+					Entity e = dragon.getLocation().getWorld().spawnEntity(dragon.getLocation(),
+							EntityType.ENDER_DRAGON);
+					e.setVelocity(new Vector(0, 1, 0));
+					e.setCustomName("AdvancedEnderdragon");
+					e.setMetadata("phase2", new FixedMetadataValue(HNCoreFix.getInstance(), true));
+				}
+			}.runTaskLater(HNCoreFix.getInstance(), 200L);
+		}
 	}
 
 	@EventHandler
 	public void onChangeEXP(EntityDeathEvent event) {
-		if(event.getEntity().getType() == EntityType.ENDER_DRAGON)
-		event.setDroppedExp(0);
+		if (!(event.getEntity().getMetadata("phase2").size() >= 1
+				&& event.getEntity().getMetadata("phase2").get(0).asBoolean())) {
+			if (event.getEntity().getType() == EntityType.ENDER_DRAGON) {
+				event.setDroppedExp(0);
+			}
+		}
 	}
 }

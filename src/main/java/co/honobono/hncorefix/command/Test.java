@@ -1,8 +1,8 @@
 package co.honobono.hncorefix.command;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 import co.honobono.hncorefix.annotation.AddCommand;
@@ -13,8 +13,10 @@ public class Test {
 
 	@AddCommand(command = "test", alias = { "t" }, description = "This is Test Command.", permission = "hncorefix.test")
 	public boolean c(CommandSender sender, String[] args) {
-		for(World w : Bukkit.getWorlds()) {
-			sender.sendMessage(w.getName());
+		Player p = (Player) sender;
+		for(EnderDragon e : p.getLocation().getWorld().getEntitiesByClass(EnderDragon.class)) {
+			sender.sendMessage("phase: " + (e.getMetadata("phase2").size() >= 1 ? e.getMetadata("phase2").get(0).asBoolean() : "null"));
+			sender.sendMessage("Health: " + e.getHealth() + "/" + e.getMaxHealth());
 		}
 		return true;
 	}

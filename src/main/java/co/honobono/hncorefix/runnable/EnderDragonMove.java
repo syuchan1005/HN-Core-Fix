@@ -42,11 +42,18 @@ public class EnderDragonMove extends BukkitRunnable {
 						}
 					}
 				}
-				// 最大体力増加
 				Damageable d = (Damageable) e;
-				if (d.getMaxHealth() == 200.0D) {
-					d.setMaxHealth(600.0D);
-					d.setHealth(600.0D);
+				if (e.getMetadata("phase2").size() >= 1 && e.getMetadata("phase2").get(0).asBoolean()) {
+					e.setVelocity(e.getVelocity().normalize().multiply(1.25));
+					if (d.getMaxHealth() == 200.0D) {
+						d.setMaxHealth(100.0D);
+						d.setHealth(100.0D);
+					}
+				} else {
+					if (d.getMaxHealth() == 200.0D) {
+						d.setMaxHealth(600.0D);
+						d.setHealth(600.0D);
+					}
 				}
 			}
 		}
