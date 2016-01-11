@@ -31,8 +31,8 @@ public class CommandManager implements TabCompleter {
 				args[0] = "help";
 			}
 			for (Map.Entry<CommandBase, Method> e : indirection.entrySet()) {
-				if (e.getKey().getCommand().equalsIgnoreCase(args[0])
-						|| Util.hasString(args[0], e.getKey().getAlias())) {
+				if (e.getKey().getName().equalsIgnoreCase(args[0])
+						|| Util.hasString(args[0], e.getKey().getAliases())) {
 					Method method = e.getValue();
 					try {
 						String[] args1 = new String[args.length - 1];
@@ -47,7 +47,7 @@ public class CommandManager implements TabCompleter {
 			}
 		} else {
 			for (Map.Entry<CommandBase, Method> e : direct.entrySet()) {
-				if (e.getKey().getCommand().equalsIgnoreCase(cmd) || Util.hasString(cmd, e.getKey().getAlias())) {
+				if (e.getKey().getName().equalsIgnoreCase(cmd) || Util.hasString(cmd, e.getKey().getAliases())) {
 					Method method = e.getValue();
 					try {
 						return (boolean) method.invoke(method.getDeclaringClass().newInstance(), sender, args);
@@ -68,8 +68,8 @@ public class CommandManager implements TabCompleter {
 	}
 
 	public void putIndirectionMap(CommandBase base, Method m) {
-		commands.add(base.getCommand());
-		for (String s : base.getAlias())
+		commands.add(base.getName());
+		for (String s : base.getAliases())
 			commands.add(s);
 		indirection.put(base, m);
 	}
@@ -86,16 +86,16 @@ public class CommandManager implements TabCompleter {
 		sender.sendMessage(ChatColor.GREEN + "======" + ChatColor.BLUE + "Command Help" + ChatColor.GREEN + "======");
 		for (Map.Entry<CommandBase, Method> e : indirection.entrySet()) {
 			CommandBase cb = e.getKey();
-			sender.sendMessage(formatCommand(cb.getCommand(), cb.getAlias()) + ":" + cb.getUsage());
+			sender.sendMessage(formatCommand(cb.getName(), cb.getAliases()) + ":" + cb.getUsage());
 		}
 	}
 
-	private static String formatCommand(String command, String[] alias) {
+	private static String formatCommand(String command, List<String> alias) {
 		String s = command;
-		if (alias.length >= 1) {
+		if (alias.size() >= 1) {
 			s = s + "(";
-			if (alias.length == 1) {
-				s = s + alias[0];
+			if (alias.size() == 1) {
+				s = s + alias.get(0);
 			} else {
 				for (String s1 : alias)
 					s = s + s1 + ",";

@@ -1,6 +1,6 @@
 package co.honobono.hncorefix.util;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -10,8 +10,8 @@ import net.minecraft.server.v1_8_R3.Packet;
 
 public class Util {
 
-	public static boolean hasString(String cmd, String[] list) {
-		return Arrays.stream(list).anyMatch(s -> s.equalsIgnoreCase(cmd));
+	public static boolean hasString(String cmd, List<String> list) {
+		return list.stream().anyMatch(s -> s.equalsIgnoreCase(cmd));
 	}
 
 	public static String getLocale(Player player) {
