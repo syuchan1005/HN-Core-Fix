@@ -1,9 +1,7 @@
 package co.honobono.hncorefix;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -46,20 +44,7 @@ public class HNCoreFix extends JavaPlugin {
 			e.printStackTrace();
 		}
 		for (Entry<CommandBase, Method> entry : manager.getDirectMap().entrySet()) {
-			try {
-				Constructor<?> cs = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
-				cs.setAccessible(true);
-				PluginCommand cmd = (PluginCommand) cs.newInstance(entry.getKey().getCommand(), this);
-				cmd.setDescription(entry.getKey().getDescription());
-				cmd.setUsage(entry.getKey().getUsage());
-				cmd.setPermission(entry.getKey().getPermission());
-				cmd.setPermissionMessage(entry.getKey().getPermissionmessage());
-				cmd.setAliases(Arrays.asList(entry.getKey().getAlias()));
-				cmd.setExecutor(this);
-				((CraftServer) getServer()).getCommandMap().register("HN-Core-Fix", cmd);
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+			((CraftServer) getServer()).getCommandMap().register("HN-Core-Fix", entry.getKey());
 		}
 		new EnderDragonMove().runTaskTimer(this, 0, 5);
 		new WitherMove().runTaskTimer(this, 0, 5);

@@ -61,7 +61,7 @@ public class CommandManager implements TabCompleter {
 		return false;
 	}
 
-	@AddCommand(command = "help", description = "This is Help Command.", permission = "hncorefix.help")
+	@AddCommand(command = "help", description = "This is Help Command.", usage = "This", permission = "hncorefix.help")
 	public boolean c(CommandSender sender, String[] args) {
 		HNCoreFix.getManager().sendHalp(sender);
 		return true;

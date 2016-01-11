@@ -28,7 +28,7 @@ public class Test {
 		}
 	}
 
-	@AddCommand(command = "test", description = "test command", permission = "hncorefix.test", usage = "/test", type = CommandType.DIRECT)
+	@AddCommand(command = "abcde", description = "test command", permission = "hncorefix.test", usage = "/test", type = CommandType.DIRECT)
 	public boolean d(CommandSender sender, String... args) {
 		sender.sendMessage("§4Test");
 		return true;

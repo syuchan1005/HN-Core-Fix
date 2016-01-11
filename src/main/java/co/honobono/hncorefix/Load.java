@@ -43,8 +43,8 @@ public class Load {
 					for (Method m : clazz.getMethods()) {
 						if (hasAddCommand(m.getAnnotations()) && hasArgs(m.getParameterTypes())) {
 							AddCommand a = getCommand(m.getAnnotations());
-							CommandBase cmd = new CommandBase(a.command(), a.alias(), a.description(), a.permission(),
-									a.permissionmessage(), a.usage());
+							CommandBase cmd = new CommandBase(a.command());
+							cmd.Set(a.command(), a.alias(), a.description(), a.permission(), a.permissionmessage(), a.usage());
 							if (a.type() == CommandType.INDIRECTION) {
 								manager.putIndirectionMap(cmd, m);
 							} else {
