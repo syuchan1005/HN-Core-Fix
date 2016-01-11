@@ -19,6 +19,7 @@ import co.honobono.hncorefix.annotation.AddCommand;
 import co.honobono.hncorefix.annotation.AddListener;
 import co.honobono.hncorefix.constructor.CommandBase;
 import co.honobono.hncorefix.constructor.CommandManager;
+import co.honobono.hncorefix.enums.CommandType;
 
 public class Load {
 	private static File langdir = new File(HNCoreFix.getInstance().getDataFolder(), "Languages");
@@ -42,14 +43,20 @@ public class Load {
 					for (Method m : clazz.getMethods()) {
 						if (hasAddCommand(m.getAnnotations()) && hasArgs(m.getParameterTypes())) {
 							AddCommand a = getCommand(m.getAnnotations());
-							manager.putMap(new CommandBase(a.command(), a.alias(), a.description(), a.permission(),
-									a.permissionmessage(), a.usage()), m);
+							CommandBase cmd = new CommandBase(a.command(), a.alias(), a.description(), a.permission(),
+									a.permissionmessage(), a.usage());
+							if (a.type() == CommandType.INDIRECTION) {
+								manager.putIndirectionMap(cmd, m);
+							} else {
+								manager.putDirectMap(cmd, m);
+							}
 						}
 					}
 				}
 				// 言語ファイルのコピー
 				if (entry.getName().endsWith(".lang")) {
-					if (!langdir.exists()) langdir.mkdirs();
+					if (!langdir.exists())
+						langdir.mkdirs();
 					File langfile = new File(langdir, new File(entry.getName()).getName());
 					InputStream im = null;
 					OutputStream os = null;

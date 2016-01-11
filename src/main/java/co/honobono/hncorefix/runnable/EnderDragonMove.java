@@ -24,7 +24,6 @@ public class EnderDragonMove extends BukkitRunnable {
 			for (Entity e : world.getEntitiesByClass(EnderDragon.class)) {
 				// 地形破壊
 				Location loc = e.getLocation();
-				loc.getBlock().setType(Material.OBSIDIAN);
 				int X = loc.getBlockX();
 				int Y = loc.getBlockY() + 3;
 				int Z = loc.getBlockZ();
@@ -43,14 +42,12 @@ public class EnderDragonMove extends BukkitRunnable {
 					}
 				}
 				Damageable d = (Damageable) e;
-				if (e.getMetadata("phase2").size() >= 1 && e.getMetadata("phase2").get(0).asBoolean()) {
-					e.setVelocity(e.getVelocity().normalize().multiply(1.25));
-					if (d.getMaxHealth() == 200.0D) {
+				if (d.getMaxHealth() == 200.0D) {
+					if (e.getMetadata("phase2").size() >= 1 && e.getMetadata("phase2").get(0).asBoolean()) {
+						e.setVelocity(e.getVelocity().normalize().multiply(1.5));
 						d.setMaxHealth(100.0D);
-						d.setHealth(100.0D);
-					}
-				} else {
-					if (d.getMaxHealth() == 200.0D) {
+						// d.setHealth(100.0D);
+					} else {
 						d.setMaxHealth(600.0D);
 						d.setHealth(600.0D);
 					}
