@@ -9,16 +9,16 @@ import co.honobono.hncorefix.HNCoreFix;
 
 public class CommandBase extends BukkitCommand {
 
+	public CommandBase(String command) {
+		super(command);
+	}
+
 	public void Set(String command, String[] alias, String description, String permission, String permissionmessage, String usage) {
 		this.setAliases(Arrays.asList(alias));
 		this.setDescription(description);
 		this.setPermission(permission);
 		this.setPermissionMessage(permissionmessage);
 		this.setUsage(usage);
-	}
-
-	public CommandBase(String command) {
-		super(command);
 	}
 
 	@Override
