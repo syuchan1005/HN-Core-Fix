@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -36,7 +35,6 @@ public class CommandManager implements TabCompleter {
 				args = new String[1];
 				args[0] = "help";
 			}
-			Bukkit.broadcastMessage("b");
 			for (Map.Entry<CommandBase, Method> e : indirection.entrySet()) {
 				if (e.getKey().getCommand().equalsIgnoreCase(args[0])
 						|| Util.hasString(args[0], e.getKey().getAlias())) {
@@ -53,10 +51,8 @@ public class CommandManager implements TabCompleter {
 				}
 			}
 		} else {
-			Bukkit.broadcastMessage("c");
 			for (Map.Entry<CommandBase, Method> e : direct.entrySet()) {
-				if (e.getKey().getCommand().equalsIgnoreCase(cmd)
-						|| Util.hasString(cmd, e.getKey().getAlias())) {
+				if (e.getKey().getCommand().equalsIgnoreCase(cmd) || Util.hasString(cmd, e.getKey().getAlias())) {
 					Method method = e.getValue();
 					try {
 						return (boolean) method.invoke(method.getDeclaringClass().newInstance(), sender, args);
@@ -87,17 +83,19 @@ public class CommandManager implements TabCompleter {
 		try {
 			Constructor<?> cs = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
 			cs.setAccessible(true);
-			PluginCommand cmd = (PluginCommand)cs.newInstance(base.getCommand(), HNCoreFix.getInstance());
+			PluginCommand cmd = (PluginCommand) cs.newInstance(base.getCommand(), HNCoreFix.getInstance());
 			cmd.setDescription(base.getDescription());
 			cmd.setUsage(base.getUsage());
 			cmd.setAliases(Arrays.asList(base.getAlias()));
 			cmd.setPermission(base.getPermission());
 			cmd.setPermissionMessage(base.getPermissionmessage());
 			cmd.setExecutor(HNCoreFix.getInstance());
-			((CraftServer)HNCoreFix.getInstance().getServer()).getCommandMap().register(base.getCommand(), cmd);
-		} catch (Throwable e) {
+			((CraftServer) HNCoreFix.getInstance().getServer()).getCommandMap().register("HN-Core-Fix", cmd);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
+
 		direct.put(base, m);
 	}
 
@@ -113,10 +111,11 @@ public class CommandManager implements TabCompleter {
 		String s = command;
 		if (alias.length >= 1) {
 			s = s + "(";
-			if(alias.length == 1) {
+			if (alias.length == 1) {
 				s = s + alias[0];
 			} else {
-				for (String s1 : alias) s = s + s1 + ",";
+				for (String s1 : alias)
+					s = s + s1 + ",";
 				s = s.substring(0, s.length() - 1);
 			}
 			s = s + ")";

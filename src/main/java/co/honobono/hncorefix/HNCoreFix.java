@@ -3,7 +3,6 @@ package co.honobono.hncorefix;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -46,7 +45,6 @@ public class HNCoreFix extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		Bukkit.broadcastMessage("a");
 		return manager.run(sender, cmd.getName(), args);
 	}
 
