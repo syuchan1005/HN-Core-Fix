@@ -1,15 +1,21 @@
 package co.honobono.hncorefix;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import co.honobono.hncorefix.constructor.CommandBase;
 import co.honobono.hncorefix.constructor.CommandManager;
 import co.honobono.hncorefix.runnable.EnderDragonMove;
 import co.honobono.hncorefix.runnable.WitherMove;
@@ -38,6 +44,22 @@ public class HNCoreFix extends JavaPlugin {
 			Load.Register(this, manager);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		for (Entry<CommandBase, Method> entry : manager.getDirectMap().entrySet()) {
+			try {
+				Constructor<?> cs = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+				cs.setAccessible(true);
+				PluginCommand cmd = (PluginCommand) cs.newInstance(entry.getKey().getCommand(), this);
+				cmd.setDescription(entry.getKey().getDescription());
+				cmd.setUsage(entry.getKey().getUsage());
+				cmd.setPermission(entry.getKey().getPermission());
+				cmd.setPermissionMessage(entry.getKey().getPermissionmessage());
+				cmd.setAliases(Arrays.asList(entry.getKey().getAlias()));
+				cmd.setExecutor(this);
+				((CraftServer) getServer()).getCommandMap().register("HN-Core-Fix", cmd);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 		new EnderDragonMove().runTaskTimer(this, 0, 5);
 		new WitherMove().runTaskTimer(this, 0, 5);

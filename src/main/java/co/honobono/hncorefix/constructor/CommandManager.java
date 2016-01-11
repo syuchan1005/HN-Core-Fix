@@ -1,10 +1,8 @@
 package co.honobono.hncorefix.constructor;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +10,7 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.plugin.Plugin;
 
 import co.honobono.hncorefix.HNCoreFix;
 import co.honobono.hncorefix.annotation.AddCommand;
@@ -80,23 +75,11 @@ public class CommandManager implements TabCompleter {
 	}
 
 	public void putDirectMap(CommandBase base, Method m) {
-		try {
-			Constructor<?> cs = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
-			cs.setAccessible(true);
-			PluginCommand cmd = (PluginCommand) cs.newInstance(base.getCommand(), HNCoreFix.getInstance());
-			cmd.setDescription(base.getDescription());
-			cmd.setUsage(base.getUsage());
-			cmd.setAliases(Arrays.asList(base.getAlias()));
-			cmd.setPermission(base.getPermission());
-			cmd.setPermissionMessage(base.getPermissionmessage());
-			cmd.setExecutor(HNCoreFix.getInstance());
-			((CraftServer) HNCoreFix.getInstance().getServer()).getCommandMap().register("HN-Core-Fix", cmd);
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
-
 		direct.put(base, m);
+	}
+
+	public Map<CommandBase, Method> getDirectMap() {
+		return direct;
 	}
 
 	public void sendHalp(CommandSender sender) {
