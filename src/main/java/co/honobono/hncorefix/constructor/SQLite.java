@@ -31,6 +31,14 @@ public class SQLite {
 		execute(sql);
 	}
 
+	public void checkPut(String table, String firstcolumn, Object firstvalue, Object... values) throws SQLException {
+		if(!noValue(get(table, firstcolumn, firstcolumn, firstvalue))) {
+			delete(table, firstcolumn, firstvalue);
+		}
+		put(table, firstvalue, values);
+	}
+
+
 	public void put(String table, Object... obj) throws SQLException {
 		String sql = "INSERT INTO " + table + " VALUES(";
 		for(Object o : obj) {
@@ -53,9 +61,14 @@ public class SQLite {
 		return executeQuery(sql);
 	}
 
-	public ResultSet get(String table, String getcolumn, String wherecolumn, String wherevalue) throws SQLException {
+	public ResultSet get(String table, String getcolumn, String wherecolumn, Object wherevalue) throws SQLException {
 		String sql = "SELECT " + getcolumn + " from " + table + " where " + wherecolumn + " = '" + wherevalue + "'";
 		return executeQuery(sql);
+	}
+
+	public void delete(String table, String column, Object columnvalue) throws SQLException {
+		String sql = "DELETE FROM " + table + " WHERE '" + column + "' != '" + columnvalue + "'";
+		execute(sql);
 	}
 
 	public void execute(String sql) throws SQLException {
@@ -73,15 +86,21 @@ public class SQLite {
 		try {
 			SQLite lite = new SQLite(new File("setting.db"));
 			lite.create("Home", map);
+			lite.put("Home", 0, "aaaaa");
 			lite.put("Home", 1, "aaaaa");
 			lite.put("Home", 3, "ccccc");
 			lite.set("Home", "Field2", "bbbbb", "Field1", "1");
-			ResultSet rs = lite.get("Home", "Field2", "Field1", "1");
-			while(rs.next()) {
-				System.out.println(rs.getString(1));
-			}
+			lite.delete("Home", "Field1", "0");
+			ResultSet rs = lite.get("Home", "Field2", "Field1", "0");
+			while(rs.next()) System.out.println(rs.getString(1));
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static boolean noValue(ResultSet rs) throws SQLException {
+		int c = 0;
+		while(rs.next()) c++;
+		return c == 0;
 	}
 }
