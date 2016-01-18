@@ -48,10 +48,13 @@ public class SQLite {
 
 	public ResultSet get(String table, String... column) throws SQLException {
 		String sql = "SELECT ";
-		for(String c : column) {
-			sql += c + ",";
-		}
+		for(String c : column) sql += c + ",";
 		sql = sql.substring(0, sql.length() - 1) + " from " + table;
+		return executeQuery(sql);
+	}
+
+	public ResultSet get(String table, String getcolumn, String wherecolumn, String wherevalue) throws SQLException {
+		String sql = "SELECT " + getcolumn + " from " + table + " where " + wherecolumn + " = '" + wherevalue + "'";
 		return executeQuery(sql);
 	}
 
@@ -73,6 +76,10 @@ public class SQLite {
 			lite.put("Home", 1, "aaaaa");
 			lite.put("Home", 3, "ccccc");
 			lite.set("Home", "Field2", "bbbbb", "Field1", "1");
+			ResultSet rs = lite.get("Home", "Field2", "Field1", "1");
+			while(rs.next()) {
+				System.out.println(rs.getString(1));
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
