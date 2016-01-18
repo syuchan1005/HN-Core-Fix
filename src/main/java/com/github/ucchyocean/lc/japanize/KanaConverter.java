@@ -3,7 +3,7 @@
  * @license    LGPLv3
  * @copyright  Copyright ucchy 2013
  */
-package co.honobono.hncorefix.util.japanese;
+package com.github.ucchyocean.lc.japanize;
 
 import java.util.HashMap;
 

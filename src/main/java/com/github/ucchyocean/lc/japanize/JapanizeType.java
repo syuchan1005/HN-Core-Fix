@@ -1,4 +1,4 @@
-package co.honobono.hncorefix.util.japanese;
+package com.github.ucchyocean.lc.japanize;
 
 /**
  * 日本語変換タイプ

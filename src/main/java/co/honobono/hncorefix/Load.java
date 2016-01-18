@@ -24,10 +24,10 @@ import co.honobono.hncorefix.enums.CommandType;
 public class Load {
 	private static File langdir = new File(HNCoreFix.getInstance().getDataFolder(), "Languages");
 
-	public static void Register(Plugin pl, CommandManager manager)
+	public static void Register(Plugin pl, CommandManager manager, boolean langLoad)
 			throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		File file = new File(
-				HNCoreFix.getInstance().getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
+				pl.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
 		JarFile jar = new JarFile(file);
 		for (Enumeration<JarEntry> e = jar.entries(); e.hasMoreElements();) {
 			JarEntry entry = e.nextElement();
@@ -47,14 +47,14 @@ public class Load {
 							cmd.Set(a.command(), a.alias(), a.description(), a.permission(), a.permissionmessage(), a.usage());
 							if (a.type() == CommandType.INDIRECTION) {
 								manager.putIndirectionMap(cmd, m);
-							} else {
+							} else if (a.type() == CommandType.DIRECT){
 								manager.putDirectMap(cmd, m);
 							}
 						}
 					}
 				}
 				// 言語ファイルのコピー
-				if (entry.getName().endsWith(".lang")) {
+				if (entry.getName().endsWith(".lang") && langLoad) {
 					if (!langdir.exists())
 						langdir.mkdirs();
 					File langfile = new File(langdir, new File(entry.getName()).getName());
@@ -63,7 +63,7 @@ public class Load {
 					try {
 						if (!langfile.exists()) {
 							langfile.createNewFile();
-							im = HNCoreFix.getInstance().getResource(entry.getName());
+							im = pl.getResource(entry.getName());
 							if (im == null)
 								return;
 							os = new FileOutputStream(langfile);

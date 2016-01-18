@@ -18,28 +18,28 @@ import co.honobono.hncorefix.constructor.CommandManager;
 import co.honobono.hncorefix.runnable.EnderDragonMove;
 import co.honobono.hncorefix.runnable.WitherMove;
 import co.honobono.hncorefix.util.Config;
+import ru.BeYkeRYkt.LightAPI.LightAPI;
+import ru.BeYkeRYkt.LightAPI.LightRegistry;
 
 public class HNCoreFix extends JavaPlugin {
 	private static Plugin instance;
 	private static Logger log;
 	private static FileConfiguration config;
-	public static FileConfiguration inv;
 	private static CommandManager manager = new CommandManager();
+	private static LightRegistry light;
 
 	@Override
 	public void onEnable() {
 		instance = this;
 		log = this.getLogger();
+		light = LightAPI.getRegistry(this);
 		PluginCommand pc = this.getCommand("hn");
 		pc.setExecutor(this);
 		pc.setTabCompleter(manager);
 		this.saveDefaultConfig();
 		try {
 			config = Config.getConfig(new File(this.getDataFolder(), "config.yml"));
-			File f = new File(HNCoreFix.getInstance().getDataFolder(), "inventory.yml");
-			f.createNewFile();
-			inv = Config.getConfig(new File(this.getDataFolder(), "inventory.yml"));
-			Load.Register(this, manager);
+			Load.Register(this, manager, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,5 +69,9 @@ public class HNCoreFix extends JavaPlugin {
 
 	public static CommandManager getManager() {
 		return manager;
+	}
+
+	public static LightRegistry getLight() {
+		return light;
 	}
 }
