@@ -79,25 +79,6 @@ public class SQLite {
 		return state.executeQuery(sql);
 	}
 
-	public static void main(String... args) {
-		LinkedHashMap<String, SQLType> map = new LinkedHashMap<>();
-		map.put("Field1", SQLType.INTEGERNOTNULL);
-		map.put("Field2", SQLType.TEXTNOTNULL);
-		try {
-			SQLite lite = new SQLite(new File("setting.db"));
-			lite.create("Home", map);
-			lite.put("Home", 0, "aaaaa");
-			lite.put("Home", 1, "aaaaa");
-			lite.put("Home", 3, "ccccc");
-			lite.set("Home", "Field2", "bbbbb", "Field1", "1");
-			lite.delete("Home", "Field1", "0");
-			ResultSet rs = lite.get("Home", "Field2", "Field1", "0");
-			while(rs.next()) System.out.println(rs.getString(1));
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private static boolean noValue(ResultSet rs) throws SQLException {
 		int c = 0;
 		while(rs.next()) c++;
