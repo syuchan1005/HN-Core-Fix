@@ -28,7 +28,7 @@ public class SQLite {
 		}
 		sql = sql.substring(0, sql.length() - 1);
 		sql += ");";
-		state.execute(sql);
+		execute(sql);
 	}
 
 	public void put(String table, Object... obj) throws SQLException {
@@ -38,12 +38,12 @@ public class SQLite {
 		}
 		sql = sql.substring(0, sql.length() - 1);
 		sql += ");";
-		state.execute(sql);
+		execute(sql);
 	}
 
 	public void set(String table, String setcolumnname, String setcolumnvalue, String wherecolumn, String wherevalue) throws SQLException {
 		String sql = "UPDATE " + table + " SET " + setcolumnname + " = " + "'" + setcolumnvalue + "' where " + wherecolumn + " = " + wherevalue;
-		state.execute(sql);
+		execute(sql);
 	}
 
 	public ResultSet get(String table, String... column) throws SQLException {
@@ -52,6 +52,14 @@ public class SQLite {
 			sql += c + ",";
 		}
 		sql = sql.substring(0, sql.length() - 1) + " from " + table;
+		return executeQuery(sql);
+	}
+
+	public void execute(String sql) throws SQLException {
+		state.execute(sql);
+	}
+
+	public ResultSet executeQuery(String sql) throws SQLException {
 		return state.executeQuery(sql);
 	}
 
