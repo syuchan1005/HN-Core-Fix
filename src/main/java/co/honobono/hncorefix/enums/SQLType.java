@@ -6,12 +6,13 @@ public enum SQLType {
 	BLOB("BLOB"),
 	REAL("REAL"),
 	NUMERIC("NUMERIC"),
-	INTEGERNOTNULL("INTEGER NOT NULL"),
-	TEXTNOTNULL("TEXT NOT NULL"),
-	BLOBNOTNULL("BLOB NOT NULL"),
-	REALNOTNULL("REAL NOT NULL"),
-	NUMERICNOTNULL("NUMERIC NOT NULL"),
-	TIMESTAMP("TIMESTAMP DEFAULT (DATETIME('now','localtime'))");
+	TIMESTAMP("TIMESTAMP"),
+	DATA("DATA"),
+	NULL("NULL"),
+	NOTNULL("NOT NULL"),
+	UNIQUE("UNIQUE"),
+	PRIMARYKEY("PRIMARY KEY"),
+	AUTOINCREMENT("AUTOINCREMENT");
 
 	final private String sql;
 
@@ -22,5 +23,9 @@ public enum SQLType {
 	@Override
 	public String toString() {
 		return this.sql;
+	}
+
+	public static SQLType[] toArray(SQLType... type ) {
+		return type;
 	}
 }
