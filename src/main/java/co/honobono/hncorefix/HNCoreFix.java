@@ -2,6 +2,8 @@ package co.honobono.hncorefix;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -15,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import co.honobono.hncorefix.constructor.CommandBase;
 import co.honobono.hncorefix.constructor.CommandManager;
+import co.honobono.hncorefix.constructor.SQLite;
+import co.honobono.hncorefix.enums.SQLType;
 import co.honobono.hncorefix.runnable.EnderDragonMove;
 import co.honobono.hncorefix.runnable.WitherMove;
 import co.honobono.hncorefix.util.Config;
@@ -27,6 +31,18 @@ public class HNCoreFix extends JavaPlugin {
 	private static FileConfiguration config;
 	private static CommandManager manager = new CommandManager();
 	private static LightRegistry light;
+	private static SQLite SQL;
+	private static LinkedHashMap<String, SQLType[]> map = new LinkedHashMap<>();
+
+	{
+		map.put("PlayerUUID", SQLType.toArray(SQLType.TEXT, SQLType.NOTNULL, SQLType.UNIQUE));
+		map.put("PlayerName", SQLType.toArray(SQLType.TEXT, SQLType.NOTNULL));
+		map.put("Time", SQLType.toArray(SQLType.TIMESTAMP));
+		map.put("Home-World", SQLType.toArray(SQLType.TEXT));
+		map.put("Home-X", SQLType.toArray(SQLType.INTEGER));
+		map.put("Home-Y", SQLType.toArray(SQLType.INTEGER));
+		map.put("Home-Z", SQLType.toArray(SQLType.INTEGER));
+	}
 
 	@Override
 	public void onEnable() {
@@ -40,6 +56,8 @@ public class HNCoreFix extends JavaPlugin {
 		try {
 			config = Config.getConfig(new File(this.getDataFolder(), "config.yml"));
 			Load.Register(this, manager, true);
+			SQL = new SQLite(new File(this.getDataFolder(), "Setting.db"));
+			SQL.create("Home", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,5 +91,16 @@ public class HNCoreFix extends JavaPlugin {
 
 	public static LightRegistry getLight() {
 		return light;
+	}
+
+	public static SQLite getSQLite() {
+		if (SQL == null) {
+			try {
+				SQL = new SQLite(new File(instance.getDataFolder(), "Setting.db"));
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return SQL;
 	}
 }
