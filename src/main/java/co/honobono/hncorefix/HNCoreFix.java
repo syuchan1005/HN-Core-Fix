@@ -18,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import co.honobono.hncorefix.constructor.CommandBase;
 import co.honobono.hncorefix.constructor.CommandManager;
 import co.honobono.hncorefix.constructor.SQLite;
-import co.honobono.hncorefix.enums.SQLType;
 import co.honobono.hncorefix.runnable.EnderDragonMove;
 import co.honobono.hncorefix.runnable.WitherMove;
 import co.honobono.hncorefix.util.Config;
@@ -32,16 +31,16 @@ public class HNCoreFix extends JavaPlugin {
 	private static CommandManager manager = new CommandManager();
 	private static LightRegistry light;
 	private static SQLite SQL;
-	private static LinkedHashMap<String, SQLType[]> map = new LinkedHashMap<>();
+	private static LinkedHashMap<String, SQLite.Casts[]> map = new LinkedHashMap<>();
 
 	{
-		map.put("PlayerUUID", SQLType.toArray(SQLType.TEXT, SQLType.NOTNULL, SQLType.UNIQUE));
-		map.put("PlayerName", SQLType.toArray(SQLType.TEXT, SQLType.NOTNULL));
-		map.put("Time", SQLType.toArray(SQLType.TIMESTAMP));
-		map.put("Home-World", SQLType.toArray(SQLType.TEXT));
-		map.put("Home-X", SQLType.toArray(SQLType.INTEGER));
-		map.put("Home-Y", SQLType.toArray(SQLType.INTEGER));
-		map.put("Home-Z", SQLType.toArray(SQLType.INTEGER));
+		map.put("PlayerUUID", SQLite.Casts.toArray(SQLite.Casts.TEXT, SQLite.Casts.NOTNULL, SQLite.Casts.UNIQUE));
+		map.put("PlayerName", SQLite.Casts.toArray(SQLite.Casts.TEXT, SQLite.Casts.NOTNULL));
+		map.put("Time", SQLite.Casts.toArray(SQLite.Casts.TIMESTAMP));
+		map.put("Home-World", SQLite.Casts.toArray(SQLite.Casts.TEXT));
+		map.put("Home-X", SQLite.Casts.toArray(SQLite.Casts.INTEGER));
+		map.put("Home-Y", SQLite.Casts.toArray(SQLite.Casts.INTEGER));
+		map.put("Home-Z", SQLite.Casts.toArray(SQLite.Casts.INTEGER));
 	}
 
 	@Override

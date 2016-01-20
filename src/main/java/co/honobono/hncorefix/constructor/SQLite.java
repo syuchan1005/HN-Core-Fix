@@ -11,9 +11,38 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import co.honobono.hncorefix.enums.SQLType;
-
 public class SQLite {
+
+	public static enum Casts {
+		INTEGER("INTEGER"),
+		TEXT("TEXT"),
+		BLOB("BLOB"),
+		REAL("REAL"),
+		NUMERIC("NUMERIC"),
+		TIMESTAMP("TIMESTAMP"),
+		DATA("DATA"),
+		NULL("NULL"),
+		NOTNULL("NOT NULL"),
+		UNIQUE("UNIQUE"),
+		PRIMARYKEY("PRIMARY KEY"),
+		AUTOINCREMENT("AUTOINCREMENT");
+
+		final private String sql;
+
+		private Casts(final String sql) {
+			this.sql = sql;
+		}
+
+		@Override
+		public String toString() {
+			return this.sql;
+		}
+
+		public static Casts[] toArray(Casts... type ) {
+			return type;
+		}
+	}
+
 	private Statement state;
 
 	public SQLite(File file) throws ClassNotFoundException, SQLException {
@@ -23,11 +52,11 @@ public class SQLite {
 
 	}
 
-	public void create(String table, LinkedHashMap<String, SQLType[]> map) throws SQLException {
+	public void create(String table, LinkedHashMap<String, Casts[]> map) throws SQLException {
 		String sql = "CREATE TABLE IF NOT EXISTS \"" + table + "\"(";
-		for (Map.Entry<String, SQLType[]> e : map.entrySet()) {
+		for (Map.Entry<String, Casts[]> e : map.entrySet()) {
 			sql += "\"" + e.getKey() + "\" ";
-			for (SQLType s : e.getValue()) {
+			for (Casts s : e.getValue()) {
 				sql += s.toString() + " ";
 			}
 			sql += ",";
