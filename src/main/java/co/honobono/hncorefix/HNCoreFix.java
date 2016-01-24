@@ -31,9 +31,7 @@ public class HNCoreFix extends JavaPlugin {
 	private static CommandManager manager = new CommandManager();
 	private static LightRegistry light;
 	private static SQLite SQL;
-	private static LinkedHashMap<String, SQLite.Casts[]> map = new LinkedHashMap<>();
-
-	{
+	private static LinkedHashMap<String, SQLite.Casts[]> map = new LinkedHashMap<>();{
 		map.put("PlayerUUID", SQLite.Casts.toArray(SQLite.Casts.TEXT, SQLite.Casts.NOTNULL, SQLite.Casts.UNIQUE));
 		map.put("PlayerName", SQLite.Casts.toArray(SQLite.Casts.TEXT, SQLite.Casts.NOTNULL));
 		map.put("Time", SQLite.Casts.toArray(SQLite.Casts.TIMESTAMP));
@@ -55,7 +53,7 @@ public class HNCoreFix extends JavaPlugin {
 		try {
 			config = Config.getConfig(new File(this.getDataFolder(), "config.yml"));
 			Load.Register(this, manager, true);
-			SQL = new SQLite(new File(this.getDataFolder(), "Setting.db"));
+			SQL = getSQLite();
 			SQL.create("Home", map);
 		} catch (Exception e) {
 			e.printStackTrace();
