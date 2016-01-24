@@ -1,10 +1,7 @@
 package co.honobono.hncorefix;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
@@ -55,30 +52,9 @@ public class Load {
 				}
 				// 言語ファイルのコピー
 				if (entry.getName().endsWith(".lang") && langLoad) {
-					if (!langdir.exists())
-						langdir.mkdirs();
+					if (!langdir.exists()) langdir.mkdirs();
 					File langfile = new File(langdir, new File(entry.getName()).getName());
-					InputStream im = null;
-					OutputStream os = null;
-					try {
-						if (!langfile.exists()) {
-							langfile.createNewFile();
-							im = pl.getResource(entry.getName());
-							if (im == null)
-								return;
-							os = new FileOutputStream(langfile);
-							int c = 0;
-							while ((c = im.read()) != -1)
-								os.write(c);
-							im.close();
-							os.close();
-						}
-					} finally {
-						if (im != null)
-							im.close();
-						if (os != null)
-							os.close();
-					}
+					if(!langfile.exists()) pl.saveResource(entry.getName(), false);
 				}
 			}
 		}
