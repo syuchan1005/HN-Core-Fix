@@ -164,7 +164,7 @@ public class SQLite {
 	 * @throws SQLException
 	 */
 	public void delete(String table, String column, Object columnvalue) throws SQLException {
-		String sql = "DELETE FROM " + table + " WHERE \"" + column + "\" != \"" + columnvalue + "\"";
+		String sql = "DELETE FROM " + table + " WHERE \"" + column + "\" == \"" + columnvalue + "\"";
 		executeUpdate(sql);
 	}
 
