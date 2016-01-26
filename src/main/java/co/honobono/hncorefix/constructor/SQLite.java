@@ -176,6 +176,16 @@ public class SQLite {
 		}
 	}
 
+	public static void main(String... args) {
+		LinkedHashMap<String, Casts[]> map = new LinkedHashMap<>();
+
+		try {
+			SQLite sql = new SQLite(new File("Test.db"));
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * テーブルに対してSQL文を送信します。返り値がない場合はこちらを使用してください。
 	 * @param sql 実行するSQL文
