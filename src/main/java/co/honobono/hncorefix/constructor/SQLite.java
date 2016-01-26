@@ -14,18 +14,9 @@ import java.util.Map;
 public class SQLite {
 
 	public static enum Casts {
-		INTEGER("INTEGER"),
-		TEXT("TEXT"),
-		BLOB("BLOB"),
-		REAL("REAL"),
-		NUMERIC("NUMERIC"),
-		TIMESTAMP("TIMESTAMP"),
-		DATA("DATA"),
-		NULL("NULL"),
-		NOTNULL("NOT NULL"),
-		UNIQUE("UNIQUE"),
-		PRIMARYKEY("PRIMARY KEY"),
-		AUTOINCREMENT("AUTOINCREMENT");
+		INTEGER("INTEGER"), TEXT("TEXT"), BLOB("BLOB"), REAL("REAL"), NUMERIC("NUMERIC"), TIMESTAMP("TIMESTAMP"), DATA(
+				"DATA"), NULL("NULL"), NOTNULL("NOT NULL"), UNIQUE("UNIQUE"), PRIMARYKEY("PRIMARY KEY"), AUTOINCREMENT(
+						"AUTOINCREMENT");
 
 		final private String sql;
 
@@ -38,7 +29,7 @@ public class SQLite {
 			return this.sql;
 		}
 
-		public static Casts[] toArray(Casts... type ) {
+		public static Casts[] toArray(Casts... type) {
 			return type;
 		}
 	}
@@ -89,7 +80,8 @@ public class SQLite {
 		delete(table, firstcolumn, firstvalue);
 		Object[] o = new Object[values.length + 1];
 		o[0] = firstvalue;
-		for (int i = 1; i < o.length; i++) o[i] = values[i - 1];
+		for (int i = 1; i < o.length; i++)
+			o[i] = values[i - 1];
 		put(table, o);
 	}
 
@@ -134,7 +126,8 @@ public class SQLite {
 	 */
 	public ResultSet get(String table, String[] column) throws SQLException {
 		String sql = "SELECT ";
-		for (String c : column) sql += "\"" + c + "\",";
+		for (String c : column)
+			sql += "\"" + c + "\",";
 		sql = sql.substring(0, sql.length() - 1) + " from " + table;
 		return executeQuery(sql);
 	}
@@ -150,7 +143,8 @@ public class SQLite {
 	 */
 	public ResultSet get(String table, String wherecolumn, Object wherevalue, String... getcolumn) throws SQLException {
 		String sql = "SELECT ";
-		for (String s : getcolumn) sql += "\"" + s + "\",";
+		for (String s : getcolumn)
+			sql += "\"" + s + "\",";
 		sql = sql.substring(0, sql.length() - 1);
 		sql += " from " + table + " where \"" + wherecolumn + "\" = \"" + wherevalue + "\";";
 		return executeQuery(sql);
@@ -166,6 +160,20 @@ public class SQLite {
 	public void delete(String table, String column, Object columnvalue) throws SQLException {
 		String sql = "DELETE FROM " + table + " WHERE \"" + column + "\" == \"" + columnvalue + "\"";
 		executeUpdate(sql);
+	}
+
+	/**
+	  * データベースにテーブルがあるか調べます
+	  * @return 有: true 無: false
+	  * @throws SQLException
+	  */
+	public boolean hasTable() {
+		try {
+			executeQuery("select * from sqlite_master where type=\"table\"");
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 
 	/**
@@ -197,7 +205,8 @@ public class SQLite {
 	 */
 	@Deprecated
 	public boolean noValue(String table, String countcolumn, Object value) throws SQLException {
-		String sql = "select count(\"" + countcolumn + "\") where \"" + countcolumn + "\" = \"" + value + "\"" + " from " + table;
+		String sql = "select count(\"" + countcolumn + "\") where \"" + countcolumn + "\" = \"" + value + "\""
+				+ " from " + table;
 		ResultSet rs = executeQuery(sql);
 		rs.next();
 		int i = rs.getInt(1);
