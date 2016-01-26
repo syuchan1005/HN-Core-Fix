@@ -163,30 +163,6 @@ public class SQLite {
 	}
 
 	/**
-	  * データベースにテーブルがあるか調べます
-	  * @return 有: true 無: false
-	  * @throws SQLException
-	  */
-	public boolean hasTable() {
-		try {
-			executeQuery("select * from sqlite_master where type=\"table\"");
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
-	}
-
-	public static void main(String... args) {
-		LinkedHashMap<String, Casts[]> map = new LinkedHashMap<>();
-
-		try {
-			SQLite sql = new SQLite(new File("Test.db"));
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * テーブルに対してSQL文を送信します。返り値がない場合はこちらを使用してください。
 	 * @param sql 実行するSQL文
 	 * @throws SQLException
