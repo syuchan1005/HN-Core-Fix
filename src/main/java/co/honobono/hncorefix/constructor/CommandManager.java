@@ -63,7 +63,7 @@ public class CommandManager implements TabCompleter {
 
 	@AddCommand(command = "help", description = "This is Help Command.", usage = "This", permission = "hncorefix.help")
 	public boolean c(CommandSender sender, String[] args) {
-		HNCoreFix.getManager().sendHalp(sender);
+		HNCoreFix.getManager().sendHelp(sender);
 		return true;
 	}
 
@@ -82,7 +82,7 @@ public class CommandManager implements TabCompleter {
 		return direct;
 	}
 
-	public void sendHalp(CommandSender sender) {
+	public void sendHelp(CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "======" + ChatColor.BLUE + "Command Help" + ChatColor.GREEN + "======");
 		for (Map.Entry<CommandBase, Method> e : indirection.entrySet()) {
 			CommandBase cb = e.getKey();
